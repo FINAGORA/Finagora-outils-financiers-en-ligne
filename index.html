@@ -2,23 +2,42 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Échelle historique de l'univers</title>
+  <title>Frise Universelle - Échelle Historique</title>
+  <meta name="description" content="Explorez votre position dans l’histoire de l’univers, de l’apparition des hominidés au XXIe siècle.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: Arial; text-align: center; padding: 2em; background: #f4f4f4; }
-    input { padding: 0.5em; font-size: 1.2em; width: 200px; }
-    #result { margin-top: 2em; font-size: 1.2em; }
-    .bar { margin: 2em auto; width: 80%; height: 20px; background: #ddd; position: relative; }
+    body { font-family: Arial, sans-serif; background: #fdfdfd; color: #333; text-align: center; padding: 2em; }
+    input, select, button {
+      padding: 0.5em; font-size: 1em; margin: 0.5em;
+    }
+    .bar {
+      margin: 2em auto; width: 90%; height: 20px;
+      background: #eee; border-radius: 10px; position: relative;
+    }
     .marker {
       width: 10px; height: 20px; background: red;
-      position: absolute; top: 0;
+      position: absolute; top: 0; border-radius: 2px;
     }
+    #result { margin-top: 1em; font-size: 1.2em; }
   </style>
 </head>
 <body>
-  <h1>Où en est-on dans l'histoire ?</h1>
-  <p>Entre une date (ex : -3000, 1789, 2024...) pour voir où elle se situe entre le Big Bang et aujourd’hui.</p>
+  <h1>Frise Historique Universelle</h1>
+  <p>Entrez une année pour voir sa place dans l’histoire selon différentes bases.</p>
+
+  <input type="number" id="yearInput" placeholder="Ex: -3000, 2024" />
   
-  <input type="number" id="yearInput" placeholder="Ex: 1945" />
+  <select id="baseSelect">
+    <option value="-13800000000">Depuis le Big Bang</option>
+    <option value="-4540000000">Depuis la formation de la Terre</option>
+    <option value="-3500000000">Depuis la vie unicellulaire</option>
+    <option value="-1000000000">Depuis la vie multicellulaire</option>
+    <option value="-6000000">Depuis les hominidés</option>
+    <option value="-300000">Depuis Homo sapiens</option>
+    <option value="-10000">Depuis l'agriculture</option>
+    <option value="-3300">Depuis l’écriture</option>
+  </select>
+
   <button onclick="showPosition()">Voir</button>
 
   <div class="bar">
@@ -28,35 +47,45 @@
   <div id="result"></div>
 
   <script>
-    const bigBang = -13800000000;
     const today = new Date().getFullYear();
 
     const events = {
-      "-3000": "Invention de l'écriture",
+      "-6000000": "Apparition des hominidés",
+      "-2500000": "Premiers outils (paléolithique)",
+      "-400000": "Domestication du feu",
+      "-300000": "Apparition d’Homo sapiens",
+      "-10000": "Début de l’agriculture",
+      "-3300": "Invention de l’écriture",
+      "-3000": "Naissance de la civilisation mésopotamienne",
       "0": "Naissance supposée de Jésus",
-      "476": "Chute de l’Empire romain d’Occident",
+      "476": "Chute de l’Empire romain",
       "1492": "Découverte de l’Amérique",
       "1789": "Révolution française",
       "1945": "Fin de la Seconde Guerre mondiale",
-      "1969": "Premier pas sur la Lune",
+      "1969": "Premier homme sur la Lune",
       "1989": "Chute du mur de Berlin"
     };
 
     function showPosition() {
-      const input = parseInt(document.getElementById("yearInput").value);
+      const year = parseInt(document.getElementById("yearInput").value);
+      const baseYear = parseInt(document.getElementById("baseSelect").value);
       const barWidth = document.querySelector(".bar").offsetWidth;
-      const totalRange = today - bigBang;
-      const position = ((input - bigBang) / totalRange) * barWidth;
+      const totalRange = today - baseYear;
+      const pos = ((year - baseYear) / totalRange) * barWidth;
 
       const marker = document.getElementById("marker");
-      marker.style.left = Math.max(0, Math.min(position, barWidth - 10)) + "px";
+      marker.style.left = Math.max(0, Math.min(pos, barWidth - 10)) + "px";
 
-      let message = `L'année ${input} représente ${(100 * (input - bigBang) / totalRange).toFixed(9)}% de l'histoire de l'univers.`;
-      if (events[input]) {
-        message += `<br><strong>Événement :</strong> ${events[input]}`;
+      const percent = ((year - baseYear) / totalRange) * 100;
+      const baseText = document.getElementById("baseSelect").selectedOptions[0].text;
+
+      let resultText = `L'année <strong>${year.toLocaleString("fr-FR")}</strong> représente <strong>${percent.toFixed(9)}%</strong> depuis <em>${baseText.toLowerCase()}</em>.`;
+
+      if (events[year]) {
+        resultText += `<br><strong>Événement :</strong> ${events[year]}`;
       }
 
-      document.getElementById("result").innerHTML = message;
+      document.getElementById("result").innerHTML = resultText;
     }
   </script>
 </body>
