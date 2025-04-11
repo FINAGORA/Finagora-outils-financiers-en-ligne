@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ligne du temps de l'univers</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      text-align: center;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input[type="number"] {
+      padding: 10px;
+      width: 200px;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+    .result {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Ligne du temps de l'univers</h1>
+    <p>Explore l'histoire de l'univers.</p>
+    <p>Entre une date entre le Big Bang et aujourd'hui.</p>
+    <p>Découvre ce qui s'est passé à cette époque.</p>
+
+    <input type="number" id="dateInput" placeholder="Année (ex: -10000000000)">
+    <div class="result" id="output"></div>
+  </div>
+
+  <script>
+    const events = {
+      "-13800000000": "Le Big Bang : naissance de l'univers.",
+      "-4500000000": "Formation de la Terre.",
+      "-380000000": "Apparition des poissons à mâchoires.",
+      "-66000000": "Disparition des dinosaures.",
+      "-2000000": "Apparition des premiers humains.",
+      "-4000": "Début de l'écriture et des civilisations.",
+      "0": "Naissance supposée de Jésus-Christ.",
+      "1492": "Christophe Colomb découvre l'Amérique.",
+      "1969": "Premier pas sur la Lune.",
+      "2024": "Nous sommes aujourd'hui à l’ère du numérique."
+    };
+
+    document.getElementById("dateInput").addEventListener("input", function() {
+      const year = this.value;
+      const output = document.getElementById("output");
+      if (events[year]) {
+        output.textContent = events[year];
+      } else {
+        output.textContent = "Aucun événement enregistré pour cette date.";
+      }
+    });
+  </script>
+</body>
+</html>
