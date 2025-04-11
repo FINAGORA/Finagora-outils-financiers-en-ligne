@@ -1,197 +1,170 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Outils financiers professionnels : calculateur TCAM, simulateur d’intérêt composé, convertisseur de taux mensuel/annuel. 100% gratuit et rapide.">
-  <meta name="keywords" content="TCAM, taux de croissance, intérêt composé, taux annuel, taux mensuel, finance, simulateur, outil en ligne, calculateur">
-  <meta name="author" content="TonNom">
-  <title>Outils Financiers en Ligne</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Outils financiers gratuits en ligne : TCAM, intérêt composé, convertisseur de taux. Ultra rapide et sans API." />
+  <meta name="keywords" content="finance, TCAM, intérêt composé, taux, convertisseur, outils, gratuit, simulateur" />
+  <meta name="author" content="TonNom" />
+  <title>Outils Financiers | TCAM, Taux, Intérêts</title>
   <style>
     :root {
-      --bg: #f9f9f9;
-      --text: #222;
-      --card: #fff;
-      --primary: #007bff;
+      --bg: #f5f5f5;
+      --text: #111;
+      --card: #ffffff;
+      --primary: #005eff;
+      --shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-
     body.dark {
       --bg: #121212;
-      --text: #eee;
-      --card: #1e1e1e;
-      --primary: #4dabf7;
+      --text: #f0f0f0;
+      --card: #1f1f1f;
+      --primary: #3399ff;
+      --shadow: 0 2px 12px rgba(255,255,255,0.05);
     }
-
     * {
       box-sizing: border-box;
-      transition: background-color 0.3s, color 0.3s;
+      transition: all 0.3s ease;
     }
-
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
       background: var(--bg);
       color: var(--text);
+      font-family: system-ui, sans-serif;
       padding: 1rem;
+      line-height: 1.6;
     }
-
-    h1 {
+    h1, h2 {
       text-align: center;
       margin-bottom: 1rem;
     }
-
     .container {
-      max-width: 700px;
+      max-width: 720px;
       margin: auto;
     }
-
     section {
       background: var(--card);
+      border-radius: 1rem;
+      box-shadow: var(--shadow);
       padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
       margin-bottom: 2rem;
     }
-
     label {
-      margin-top: 1rem;
+      font-weight: 600;
       display: block;
+      margin-top: 1rem;
     }
-
     input {
       width: 100%;
       padding: 0.6rem;
       font-size: 1rem;
-      margin-top: 0.3rem;
-      border: 1px solid #ccc;
+      margin-top: 0.4rem;
       border-radius: 6px;
+      border: 1px solid #ccc;
+      background: #fff;
+      color: #000;
     }
-
     button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 0.6rem 1.2rem;
       margin-top: 1rem;
-      cursor: pointer;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1rem;
       border-radius: 6px;
       font-size: 1rem;
+      cursor: pointer;
     }
-
     button:hover {
       opacity: 0.9;
     }
-
     .result {
       margin-top: 1rem;
       font-weight: bold;
     }
-
     .toggle-theme {
       position: fixed;
       top: 1rem;
       right: 1rem;
       background: var(--card);
       border: 1px solid #ccc;
-      padding: 0.5rem 1rem;
+      padding: 0.4rem 0.9rem;
       border-radius: 20px;
+      font-size: 0.9rem;
       cursor: pointer;
+    }
+    @media (max-width: 600px) {
+      body { padding: 0.8rem; }
+      section { padding: 1rem; }
     }
   </style>
 </head>
 <body>
+  <button class="toggle-theme" onclick="document.body.classList.toggle('dark')">🌓 Thème</button>
 
-  <button class="toggle-theme" onclick="toggleTheme()">🌗 Mode sombre</button>
+  <main class="container">
+    <h1>🧮 Outils Financiers en Ligne</h1>
 
-  <div class="container">
-    <h1>🧮 Outils Financiers Professionnels</h1>
-
-    <!-- TCAM -->
     <section>
-      <h2>📈 Calculateur TCAM</h2>
-      <label>Valeur Initiale (€)</label>
-      <input type="number" id="tcam-initial">
-      <label>Valeur Finale (€)</label>
-      <input type="number" id="tcam-finale">
-      <label>Durée (années)</label>
-      <input type="number" id="tcam-annees">
-      <button onclick="calculerTCAM()">Calculer TCAM</button>
+      <h2>📈 TCAM - Taux de Croissance Annuel Moyen</h2>
+      <label for="tcam-initial">Valeur Initiale (€)</label>
+      <input id="tcam-initial" type="number" />
+      <label for="tcam-finale">Valeur Finale (€)</label>
+      <input id="tcam-finale" type="number" />
+      <label for="tcam-annees">Durée (années)</label>
+      <input id="tcam-annees" type="number" />
+      <button onclick="calcTCAM()">Calculer TCAM</button>
       <div class="result" id="tcam-result"></div>
     </section>
 
-    <!-- Intérêt composé -->
     <section>
       <h2>💰 Intérêt Composé</h2>
-      <label>Capital initial (€)</label>
-      <input type="number" id="capital-initial">
-      <label>Taux annuel (%)</label>
-      <input type="number" id="taux-annuel">
-      <label>Durée (années)</label>
-      <input type="number" id="duree">
-      <button onclick="calculerInteretCompose()">Calculer</button>
+      <label for="capital">Capital initial (€)</label>
+      <input id="capital" type="number" />
+      <label for="taux">Taux annuel (%)</label>
+      <input id="taux" type="number" />
+      <label for="duree">Durée (années)</label>
+      <input id="duree" type="number" />
+      <button onclick="calcInteret()">Calculer</button>
       <div class="result" id="interet-result"></div>
     </section>
 
-    <!-- Conversion de taux -->
     <section>
-      <h2>🔄 Convertisseur Taux</h2>
-      <label>Taux mensuel (%)</label>
-      <input type="number" id="taux-mensuel">
-      <button onclick="convertirMensuelVersAnnuel()">→ Taux annuel</button>
-      <div class="result" id="taux-annuel-result"></div>
+      <h2>🔄 Convertisseur Taux Mensuel / Annuel</h2>
+      <label for="mensuel">Taux mensuel (%)</label>
+      <input id="mensuel" type="number" />
+      <button onclick="mensuelVersAnnuel()">→ Taux annuel</button>
+      <div class="result" id="result-annuel"></div>
 
-      <label style="margin-top:1rem;">Taux annuel (%)</label>
-      <input type="number" id="taux-annuel-conv">
-      <button onclick="convertirAnnuelVersMensuel()">→ Taux mensuel</button>
-      <div class="result" id="taux-mensuel-result"></div>
+      <label for="annuel" style="margin-top:1rem;">Taux annuel (%)</label>
+      <input id="annuel" type="number" />
+      <button onclick="annuelVersMensuel()">→ Taux mensuel</button>
+      <div class="result" id="result-mensuel"></div>
     </section>
-  </div>
+  </main>
 
   <script>
-    function calculerTCAM() {
-      const vi = parseFloat(document.getElementById("tcam-initial").value);
-      const vf = parseFloat(document.getElementById("tcam-finale").value);
-      const n = parseFloat(document.getElementById("tcam-annees").value);
-      if (vi > 0 && vf > 0 && n > 0) {
-        const tcam = ((vf / vi) ** (1 / n) - 1) * 100;
-        document.getElementById("tcam-result").textContent = "TCAM : " + tcam.toFixed(2) + " %";
-      } else {
-        document.getElementById("tcam-result").textContent = "Veuillez remplir tous les champs.";
-      }
+    const val = id => parseFloat(document.getElementById(id).value) || 0;
+    const out = (id, text) => document.getElementById(id).textContent = text;
+
+    function calcTCAM() {
+      const vi = val('tcam-initial'), vf = val('tcam-finale'), n = val('tcam-annees');
+      out("tcam-result", (vi && vf && n) ? `TCAM : ${(((vf/vi)**(1/n)-1)*100).toFixed(2)} %` : "Champs manquants.");
     }
 
-    function calculerInteretCompose() {
-      const ci = parseFloat(document.getElementById("capital-initial").value);
-      const taux = parseFloat(document.getElementById("taux-annuel").value) / 100;
-      const n = parseFloat(document.getElementById("duree").value);
-      if (ci > 0 && taux >= 0 && n > 0) {
-        const montantFinal = ci * Math.pow(1 + taux, n);
-        document.getElementById("interet-result").textContent = "Montant final : " + montantFinal.toFixed(2) + " €";
-      } else {
-        document.getElementById("interet-result").textContent = "Champs invalides.";
-      }
+    function calcInteret() {
+      const ci = val('capital'), taux = val('taux')/100, n = val('duree');
+      out("interet-result", (ci && taux >= 0 && n) ? `Montant final : ${(ci*(1+taux)**n).toFixed(2)} €` : "Champs invalides.");
     }
 
-    function convertirMensuelVersAnnuel() {
-      const tauxMensuel = parseFloat(document.getElementById("taux-mensuel").value);
-      if (tauxMensuel >= 0) {
-        const tauxAnnuel = (Math.pow(1 + tauxMensuel / 100, 12) - 1) * 100;
-        document.getElementById("taux-annuel-result").textContent = "Taux annuel équivalent : " + tauxAnnuel.toFixed(2) + " %";
-      }
+    function mensuelVersAnnuel() {
+      const m = val('mensuel');
+      out("result-annuel", m >= 0 ? `Taux annuel équivalent : ${((1 + m/100)**12 - 1).toFixed(2)} %` : "");
     }
 
-    function convertirAnnuelVersMensuel() {
-      const tauxAnnuel = parseFloat(document.getElementById("taux-annuel-conv").value);
-      if (tauxAnnuel >= 0) {
-        const tauxMensuel = (Math.pow(1 + tauxAnnuel / 100, 1 / 12) - 1) * 100;
-        document.getElementById("taux-mensuel-result").textContent = "Taux mensuel équivalent : " + tauxMensuel.toFixed(2) + " %";
-      }
-    }
-
-    function toggleTheme() {
-      document.body.classList.toggle("dark");
+    function annuelVersMensuel() {
+      const a = val('annuel');
+      out("result-mensuel", a >= 0 ? `Taux mensuel équivalent : ${((1 + a/100)**(1/12) - 1).toFixed(2)} %` : "");
     }
   </script>
-
 </body>
 </html>
