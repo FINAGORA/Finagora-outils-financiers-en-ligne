@@ -2,145 +2,130 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Frise Historique Universelle</title>
-  <meta name="description" content="Visualisez votre place dans l’histoire de l’univers, de l’apparition des hominidés à aujourd’hui.">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frise de Conformité - Compléments Alimentaires</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
-      font-family: "Segoe UI", sans-serif;
-      margin: 0;
-      background: #f9f9f9;
+      font-family: Arial, sans-serif;
+      padding: 2em;
+      background: #f5f5f5;
       color: #222;
-      transition: background 0.3s, color 0.3s;
     }
-    .dark {
-      background: #111;
-      color: #eee;
-    }
-    header {
+    h1 {
       text-align: center;
-      padding: 1.5em;
     }
-    main {
+    form {
+      background: #fff;
+      padding: 1em;
+      border-radius: 8px;
       max-width: 700px;
       margin: auto;
-      padding: 1em;
-      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    input, select, button {
-      font-size: 1em;
+    label {
+      display: block;
+      margin-top: 1em;
+      font-weight: bold;
+    }
+    input, textarea, select, button {
+      width: 100%;
       padding: 0.5em;
-      margin: 0.3em;
-      border-radius: 5px;
+      margin-top: 0.3em;
+      border-radius: 4px;
+      border: 1px solid #ccc;
     }
     canvas {
       display: block;
       margin: 2em auto;
+      background: #fff;
+      border: 1px solid #ddd;
     }
     #result {
-      font-size: 1.2em;
-      margin-top: 1.5em;
-    }
-    .controls {
-      margin-bottom: 1em;
-    }
-    .theme-toggle {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      padding: 0.3em 0.6em;
-      cursor: pointer;
+      margin-top: 2em;
+      background: #fff;
+      padding: 1em;
+      border-radius: 8px;
+      max-width: 700px;
+      margin: 2em auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
-  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-  <header>
-    <h1>Frise Historique Universelle</h1>
-    <p>Visualisez l’année que vous souhaitez dans une échelle cosmique ou humaine.</p>
-  </header>
-  <main>
-    <div class="controls">
-      <input type="number" id="yearInput" placeholder="Ex: -3000, 2024" />
-      <select id="baseSelect" onchange="showPosition()">
-        <option value="-13800000000">Depuis le Big Bang</option>
-        <option value="-4540000000">Depuis la formation de la Terre</option>
-        <option value="-3500000000">Depuis la vie unicellulaire</option>
-        <option value="-1000000000">Depuis la vie multicellulaire</option>
-        <option value="-6000000">Depuis les hominidés</option>
-        <option value="-300000">Depuis Homo sapiens</option>
-        <option value="-10000">Depuis l'agriculture</option>
-        <option value="-3300">Depuis l’écriture</option>
-      </select>
-      <button onclick="showPosition()">Voir</button>
-    </div>
+  <h1>Frise de Conformité - Compléments Alimentaires</h1>
+  <form onsubmit="event.preventDefault(); generateTimeline();">
+    <label for="notificationDate">Date de notification à la DGCCRF</label>
+    <input type="date" id="notificationDate" required />
 
-    <canvas id="timeline" width="600" height="50"></canvas>
-    <div id="result"></div>
-  </main>
+    <label for="ingredients">Ingrédients principaux</label>
+    <textarea id="ingredients" placeholder="ex: curcuma, vitamine D, zinc..."></textarea>
+
+    <label for="allegations">Allégations utilisées</label>
+    <textarea id="allegations" placeholder="ex: contribue au bon fonctionnement du système immunitaire..."></textarea>
+
+    <label for="modifications">Modification prévue (formule, étiquetage...)</label>
+    <select id="modifications">
+      <option value="aucune">Aucune</option>
+      <option value="formule">Formule</option>
+      <option value="etiquetage">Étiquetage</option>
+      <option value="autre">Autre</option>
+    </select>
+
+    <button type="submit">Générer la frise</button>
+  </form>
+
+  <canvas id="timeline" width="600" height="100"></canvas>
+  <div id="result"></div>
 
   <script>
-    const today = new Date().getFullYear();
-    const canvas = document.getElementById("timeline");
-    const ctx = canvas.getContext("2d");
+    function generateTimeline() {
+      const canvas = document.getElementById("timeline");
+      const ctx = canvas.getContext("2d");
+      const notifDate = new Date(document.getElementById("notificationDate").value);
+      const result = document.getElementById("result");
 
-    const events = {
-      "-6000000": "Apparition des hominidés",
-      "-2500000": "Premiers outils (paléolithique)",
-      "-400000": "Domestication du feu",
-      "-300000": "Apparition d’Homo sapiens",
-      "-10000": "Début de l’agriculture",
-      "-3300": "Invention de l’écriture",
-      "-3000": "Naissance de la civilisation mésopotamienne",
-      "0": "Naissance supposée de Jésus",
-      "476": "Chute de l’Empire romain",
-      "1492": "Découverte de l’Amérique",
-      "1789": "Révolution française",
-      "1945": "Fin de la Seconde Guerre mondiale",
-      "1969": "Premier homme sur la Lune",
-      "1989": "Chute du mur de Berlin"
-    };
-
-    function showPosition() {
-      const input = parseInt(document.getElementById("yearInput").value);
-      const baseYear = parseInt(document.getElementById("baseSelect").value);
-      const baseLabel = document.getElementById("baseSelect").selectedOptions[0].text;
-      const width = canvas.width;
-      const height = canvas.height;
-
-      // Position du marqueur
-      const totalRange = today - baseYear;
-      const percent = ((input - baseYear) / totalRange);
-      const x = Math.max(0, Math.min(percent * width, width - 10));
-
-      // Nettoyage du canvas
-      ctx.clearRect(0, 0, width, height);
-
-      // Barre de fond
-      ctx.fillStyle = "#ccc";
-      ctx.fillRect(50, height / 2 - 5, width - 100, 10);
-
-      // Marqueur de base
-      ctx.fillStyle = "#888";
-      ctx.font = "12px sans-serif";
-      ctx.fillText(baseYear.toLocaleString("fr-FR"), 0, height / 2 + 4);
-
-      // Marqueur rouge
-      ctx.fillStyle = "red";
-      ctx.fillRect(50 + x, height / 2 - 10, 4, 20);
-
-      // Résultat
-      let message = `L'année <strong>${input.toLocaleString("fr-FR")}</strong> représente <strong>${(percent * 100).toFixed(9)}%</strong> depuis <em>${baseLabel.toLowerCase()}</em>.`;
-
-      if (events[input]) {
-        message += `<br><strong>Événement :</strong> ${events[input]}`;
+      if (isNaN(notifDate)) {
+        alert("Veuillez entrer une date valide.");
+        return;
       }
 
-      document.getElementById("result").innerHTML = message;
-    }
+      const steps = [
+        { label: "Notification DGCCRF", delay: 0 },
+        { label: "Mise sur le marché possible", delay: 7 },
+        { label: "Premier contrôle qualité conseillé", delay: 30 },
+        { label: "Vérification des allégations", delay: 180 },
+        { label: "Audit interne recommandé", delay: 365 },
+        { label: "Révision annuelle du dossier", delay: 365, repeat: true }
+      ];
 
-    function toggleTheme() {
-      document.body.classList.toggle("dark");
+      // Canvas setup
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#ccc";
+      ctx.fillRect(50, 50, canvas.width - 100, 2);
+
+      const origin = notifDate.getTime();
+      const scale = 10 * 24 * 60 * 60 * 1000; // 10 jours = 100px
+
+      ctx.font = "12px sans-serif";
+
+      steps.forEach((step, i) => {
+        const x = 50 + (step.delay * 100 / 10);
+        ctx.fillStyle = "#1976d2";
+        ctx.beginPath();
+        ctx.arc(x, 50, 5, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.fillStyle = "#000";
+        ctx.fillText(step.label, x - 30, 70);
+      });
+
+      // Résumé texte
+      let html = `<h3>Résumé des étapes :</h3><ul>`;
+      steps.forEach(step => {
+        const d = new Date(origin + step.delay * 24 * 60 * 60 * 1000);
+        html += `<li><strong>${step.label} :</strong> ${d.toLocaleDateString("fr-FR")}</li>`;
+      });
+      html += `</ul>`;
+      result.innerHTML = html;
     }
   </script>
 </body>
