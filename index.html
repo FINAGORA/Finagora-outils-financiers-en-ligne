@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f9f9f9;
         }
         header {
             background: #333;
@@ -28,6 +29,7 @@
             padding: 15px;
             border: 1px solid #ccc;
             border-radius: 8px;
+            background-color: #fff;
         }
         .tool h3 {
             text-align: center;
@@ -40,6 +42,7 @@
         }
         .result {
             margin-top: 15px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -72,12 +75,93 @@
         <div class="result" id="depreciationResult"></div>
     </div>
 
-    <!-- Autres outils... -->
+    <!-- Générateur de contrat -->
+    <div class="tool">
+        <h3>Générateur de contrat</h3>
+        <input type="text" id="contractName" placeholder="Nom du contrat" />
+        <input type="text" id="contractDate" placeholder="Date" />
+        <input type="text" id="contractClauses" placeholder="Clauses principales" />
+        <button onclick="generateContract()">Générer</button>
+        <div class="result" id="contractResult"></div>
+    </div>
 
+    <!-- Simulateur de rentabilité -->
+    <div class="tool">
+        <h3>Simulateur de rentabilité</h3>
+        <input type="number" id="investmentAmount" placeholder="Montant investissement" />
+        <input type="number" id="rateOfReturn" placeholder="Taux de retour (%)" />
+        <input type="number" id="investmentPeriod" placeholder="Période (années)" />
+        <button onclick="calculateProfitability()">Calculer</button>
+        <div class="result" id="profitabilityResult"></div>
+    </div>
+
+    <!-- Carte des risques -->
+    <div class="tool">
+        <h3>Carte des risques d’incendie</h3>
+        <input type="text" id="riskZone" placeholder="Zone géographique" />
+        <button onclick="showFireRisk()">Afficher risque</button>
+        <div class="result" id="fireRiskResult"></div>
+    </div>
+
+    <!-- Générateur de roadmap -->
+    <div class="tool">
+        <h3>Générateur de roadmap</h3>
+        <input type="text" id="roadmapTitle" placeholder="Titre de la roadmap" />
+        <input type="text" id="roadmapSteps" placeholder="Étapes" />
+        <input type="date" id="roadmapDate" placeholder="Date de début" />
+        <button onclick="generateRoadmap()">Générer</button>
+        <div class="result" id="roadmapResult"></div>
+    </div>
+
+    <!-- Calculateur de l'empreinte carbone -->
+    <div class="tool">
+        <h3>Calculateur de l'empreinte carbone</h3>
+        <input type="number" id="activityType" placeholder="Activité (ex. transport)" />
+        <input type="number" id="quantity" placeholder="Quantité" />
+        <button onclick="calculateCarbonFootprint()">Calculer</button>
+        <div class="result" id="carbonResult"></div>
+    </div>
+
+    <!-- Suivi des KPI -->
+    <div class="tool">
+        <h3>Suivi des KPI</h3>
+        <input type="number" id="salesGoal" placeholder="Objectif de ventes" />
+        <input type="number" id="actualSales" placeholder="Ventes réelles" />
+        <button onclick="trackKPI()">Suivre KPI</button>
+        <div class="result" id="kpiResult"></div>
+    </div>
+
+    <!-- Suivi des événements -->
+    <div class="tool">
+        <h3>Suivi des événements</h3>
+        <input type="text" id="eventTitle" placeholder="Nom de l’événement" />
+        <input type="date" id="eventDate" placeholder="Date de l’événement" />
+        <button onclick="trackEvent()">Suivre événement</button>
+        <div class="result" id="eventResult"></div>
+    </div>
+
+    <!-- Calculateur de temps de travail -->
+    <div class="tool">
+        <h3>Calculateur de temps de travail</h3>
+        <input type="number" id="workHoursPerDay" placeholder="Heures par jour" />
+        <input type="number" id="workDaysPerWeek" placeholder="Jours par semaine" />
+        <button onclick="calculateWorkHours()">Calculer</button>
+        <div class="result" id="workHoursResult"></div>
+    </div>
+
+    <!-- Calculateur de TCAM -->
+    <div class="tool">
+        <h3>Calculateur de TCAM</h3>
+        <input type="number" id="initialValue" placeholder="Valeur initiale" />
+        <input type="number" id="finalValue" placeholder="Valeur finale" />
+        <input type="number" id="yearsPeriod" placeholder="Nombre d'années" />
+        <button onclick="calculateCAGR()">Calculer TCAM</button>
+        <div class="result" id="cagrResult"></div>
+    </div>
 </div>
 
 <script>
-// Exemple de calculateur de coûts de production
+// Fonction de calcul du coût de production par unité
 function calculateProductionCost() {
     let costMaterial = parseFloat(document.getElementById("costMaterial").value);
     let costLabor = parseFloat(document.getElementById("costLabor").value);
@@ -94,7 +178,7 @@ function calculateProductionCost() {
     document.getElementById("productionResult").innerText = "Coût par unité produite : " + costPerUnit.toFixed(2) + " €";
 }
 
-// Exemple de calculateur d'amortissement
+// Fonction de calcul d'amortissement
 function calculateDepreciation() {
     let purchaseCost = parseFloat(document.getElementById("purchaseCost").value);
     let lifeSpan = parseFloat(document.getElementById("lifeSpan").value);
@@ -109,7 +193,116 @@ function calculateDepreciation() {
     document.getElementById("depreciationResult").innerText = "Amortissement annuel : " + annualDepreciation.toFixed(2) + " €";
 }
 
-// Autres fonctions de calculs pour les autres outils...
+// Fonction de génération de contrat
+function generateContract() {
+    let name = document.getElementById("contractName").value;
+    let date = document.getElementById("contractDate").value;
+    let clauses = document.getElementById("contractClauses").value;
+    
+    document.getElementById("contractResult").innerHTML = `
+        <strong>Contrat : </strong>${name}<br>
+        <strong>Date : </strong>${date}<br>
+        <strong>Clauses : </strong>${clauses}`;
+}
+
+// Fonction de rentabilité
+function calculateProfitability() {
+    let investmentAmount = parseFloat(document.getElementById("investmentAmount").value);
+    let rateOfReturn = parseFloat(document.getElementById("rateOfReturn").value);
+    let investmentPeriod = parseFloat(document.getElementById("investmentPeriod").value);
+    
+    if (isNaN(investmentAmount) || isNaN(rateOfReturn) || isNaN(investmentPeriod)) {
+        document.getElementById("profitabilityResult").innerText = "Veuillez entrer des valeurs valides.";
+        return;
+    }
+    
+    let profitability = investmentAmount * Math.pow(1 + rateOfReturn / 100, investmentPeriod);
+    document.getElementById("profitabilityResult").innerText = "Rentabilité à la fin de la période : " + profitability.toFixed(2) + " €";
+}
+
+// Fonction pour afficher les risques d'incendie (exemple basique)
+function showFireRisk() {
+    let riskZone = document.getElementById("riskZone").value;
+    document.getElementById("fireRiskResult").innerText = `Risque d’incendie dans la zone : ${riskZone}`;
+}
+
+// Fonction pour générer la roadmap
+function generateRoadmap() {
+    let title = document.getElementById("roadmapTitle").value;
+    let steps = document.getElementById("roadmapSteps").value;
+    let date = document.getElementById("roadmapDate").value;
+    
+    document.getElementById("roadmapResult").innerHTML = `
+        <strong>Roadmap : </strong>${title}<br>
+        <strong>Étapes : </strong>${steps}<br>
+        <strong>Date : </strong>${date}`;
+}
+
+// Fonction pour calculer l'empreinte carbone
+function calculateCarbonFootprint() {
+    let activity = document.getElementById("activityType").value;
+    let quantity = parseFloat(document.getElementById("quantity").value);
+    
+    if (isNaN(quantity)) {
+        document.getElementById("carbonResult").innerText = "Veuillez entrer une quantité valide.";
+        return;
+    }
+    
+    document.getElementById("carbonResult").innerText = `Empreinte carbone de l’activité ${activity} : ${quantity * 0.5} kg CO2`; // Exemple simplifié
+}
+
+// Fonction pour suivre les KPIs
+function trackKPI() {
+    let salesGoal = parseFloat(document.getElementById("salesGoal").value);
+    let actualSales = parseFloat(document.getElementById("actualSales").value);
+    
+    if (isNaN(salesGoal) || isNaN(actualSales)) {
+        document.getElementById("kpiResult").innerText = "Veuillez entrer des valeurs valides.";
+        return;
+    }
+    
+    let kpi = (actualSales / salesGoal) * 100;
+    document.getElementById("kpiResult").innerText = `KPI : ${kpi.toFixed(2)}%`;
+}
+
+// Fonction pour suivre les événements
+function trackEvent() {
+    let title = document.getElementById("eventTitle").value;
+    let date = document.getElementById("eventDate").value;
+    
+    document.getElementById("eventResult").innerHTML = `
+        <strong>Événement : </strong>${title}<br>
+        <strong>Date : </strong>${date}`;
+}
+
+// Fonction pour calculer le temps de travail
+function calculateWorkHours() {
+    let workHoursPerDay = parseFloat(document.getElementById("workHoursPerDay").value);
+    let workDaysPerWeek = parseFloat(document.getElementById("workDaysPerWeek").value);
+    
+    if (isNaN(workHoursPerDay) || isNaN(workDaysPerWeek)) {
+        document.getElementById("workHoursResult").innerText = "Veuillez entrer des valeurs valides.";
+        return;
+    }
+    
+    let totalHours = workHoursPerDay * workDaysPerWeek;
+    document.getElementById("workHoursResult").innerText = `Temps de travail total par semaine : ${totalHours} heures`;
+}
+
+// Fonction pour calculer le TCAM
+function calculateCAGR() {
+    let initialValue = parseFloat(document.getElementById("initialValue").value);
+    let finalValue = parseFloat(document.getElementById("finalValue").value);
+    let yearsPeriod = parseFloat(document.getElementById("yearsPeriod").value);
+    
+    if (isNaN(initialValue) || isNaN(finalValue) || isNaN(yearsPeriod)) {
+        document.getElementById("cagrResult").innerText = "Veuillez entrer des valeurs valides.";
+        return;
+    }
+    
+    let cagr = Math.pow(finalValue / initialValue, 1 / yearsPeriod) - 1;
+    document.getElementById("cagrResult").innerText = `TCAM : ${(cagr * 100).toFixed(2)}%`;
+}
 </script>
 
 </body>
