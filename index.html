@@ -1,132 +1,116 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Frise de Conformité - Compléments Alimentaires</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 2em;
-      background: #f5f5f5;
-      color: #222;
-    }
-    h1 {
-      text-align: center;
-    }
-    form {
-      background: #fff;
-      padding: 1em;
-      border-radius: 8px;
-      max-width: 700px;
-      margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    label {
-      display: block;
-      margin-top: 1em;
-      font-weight: bold;
-    }
-    input, textarea, select, button {
-      width: 100%;
-      padding: 0.5em;
-      margin-top: 0.3em;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    canvas {
-      display: block;
-      margin: 2em auto;
-      background: #fff;
-      border: 1px solid #ddd;
-    }
-    #result {
-      margin-top: 2em;
-      background: #fff;
-      padding: 1em;
-      border-radius: 8px;
-      max-width: 700px;
-      margin: 2em auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outils Professionnels</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        .tool {
+            width: 300px;
+            margin: 10px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        .tool h3 {
+            text-align: center;
+        }
+        .tool input, .tool button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 1em;
+        }
+        .result {
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Frise de Conformité - Compléments Alimentaires</h1>
-  <form onsubmit="event.preventDefault(); generateTimeline();">
-    <label for="notificationDate">Date de notification à la DGCCRF</label>
-    <input type="date" id="notificationDate" required />
 
-    <label for="ingredients">Ingrédients principaux</label>
-    <textarea id="ingredients" placeholder="ex: curcuma, vitamine D, zinc..."></textarea>
+<header>
+    <h1>Outils Professionnels</h1>
+    <p>Calculs simples pour les entreprises, finance, et gestion de projet</p>
+</header>
 
-    <label for="allegations">Allégations utilisées</label>
-    <textarea id="allegations" placeholder="ex: contribue au bon fonctionnement du système immunitaire..."></textarea>
+<div class="container">
+    <!-- Calculateur de coûts de production -->
+    <div class="tool">
+        <h3>Calculateur de coûts de production</h3>
+        <input type="number" id="costMaterial" placeholder="Coût matières" />
+        <input type="number" id="costLabor" placeholder="Coût travail" />
+        <input type="number" id="overhead" placeholder="Frais généraux" />
+        <input type="number" id="unitsProduced" placeholder="Unité produite" />
+        <button onclick="calculateProductionCost()">Calculer</button>
+        <div class="result" id="productionResult"></div>
+    </div>
 
-    <label for="modifications">Modification prévue (formule, étiquetage...)</label>
-    <select id="modifications">
-      <option value="aucune">Aucune</option>
-      <option value="formule">Formule</option>
-      <option value="etiquetage">Étiquetage</option>
-      <option value="autre">Autre</option>
-    </select>
+    <!-- Calculateur d’amortissement -->
+    <div class="tool">
+        <h3>Simulateur d’amortissement</h3>
+        <input type="number" id="purchaseCost" placeholder="Coût d’achat" />
+        <input type="number" id="lifeSpan" placeholder="Durée de vie" />
+        <input type="number" id="residualValue" placeholder="Valeur résiduelle" />
+        <button onclick="calculateDepreciation()">Calculer</button>
+        <div class="result" id="depreciationResult"></div>
+    </div>
 
-    <button type="submit">Générer la frise</button>
-  </form>
+    <!-- Autres outils... -->
 
-  <canvas id="timeline" width="600" height="100"></canvas>
-  <div id="result"></div>
+</div>
 
-  <script>
-    function generateTimeline() {
-      const canvas = document.getElementById("timeline");
-      const ctx = canvas.getContext("2d");
-      const notifDate = new Date(document.getElementById("notificationDate").value);
-      const result = document.getElementById("result");
-
-      if (isNaN(notifDate)) {
-        alert("Veuillez entrer une date valide.");
+<script>
+// Exemple de calculateur de coûts de production
+function calculateProductionCost() {
+    let costMaterial = parseFloat(document.getElementById("costMaterial").value);
+    let costLabor = parseFloat(document.getElementById("costLabor").value);
+    let overhead = parseFloat(document.getElementById("overhead").value);
+    let unitsProduced = parseFloat(document.getElementById("unitsProduced").value);
+    
+    if (isNaN(costMaterial) || isNaN(costLabor) || isNaN(overhead) || isNaN(unitsProduced)) {
+        document.getElementById("productionResult").innerText = "Veuillez entrer des valeurs valides.";
         return;
-      }
-
-      const steps = [
-        { label: "Notification DGCCRF", delay: 0 },
-        { label: "Mise sur le marché possible", delay: 7 },
-        { label: "Premier contrôle qualité conseillé", delay: 30 },
-        { label: "Vérification des allégations", delay: 180 },
-        { label: "Audit interne recommandé", delay: 365 },
-        { label: "Révision annuelle du dossier", delay: 365, repeat: true }
-      ];
-
-      // Canvas setup
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#ccc";
-      ctx.fillRect(50, 50, canvas.width - 100, 2);
-
-      const origin = notifDate.getTime();
-      const scale = 10 * 24 * 60 * 60 * 1000; // 10 jours = 100px
-
-      ctx.font = "12px sans-serif";
-
-      steps.forEach((step, i) => {
-        const x = 50 + (step.delay * 100 / 10);
-        ctx.fillStyle = "#1976d2";
-        ctx.beginPath();
-        ctx.arc(x, 50, 5, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.fillStyle = "#000";
-        ctx.fillText(step.label, x - 30, 70);
-      });
-
-      // Résumé texte
-      let html = `<h3>Résumé des étapes :</h3><ul>`;
-      steps.forEach(step => {
-        const d = new Date(origin + step.delay * 24 * 60 * 60 * 1000);
-        html += `<li><strong>${step.label} :</strong> ${d.toLocaleDateString("fr-FR")}</li>`;
-      });
-      html += `</ul>`;
-      result.innerHTML = html;
     }
-  </script>
+    
+    let totalCost = costMaterial + costLabor + overhead;
+    let costPerUnit = totalCost / unitsProduced;
+    document.getElementById("productionResult").innerText = "Coût par unité produite : " + costPerUnit.toFixed(2) + " €";
+}
+
+// Exemple de calculateur d'amortissement
+function calculateDepreciation() {
+    let purchaseCost = parseFloat(document.getElementById("purchaseCost").value);
+    let lifeSpan = parseFloat(document.getElementById("lifeSpan").value);
+    let residualValue = parseFloat(document.getElementById("residualValue").value);
+    
+    if (isNaN(purchaseCost) || isNaN(lifeSpan) || isNaN(residualValue)) {
+        document.getElementById("depreciationResult").innerText = "Veuillez entrer des valeurs valides.";
+        return;
+    }
+    
+    let annualDepreciation = (purchaseCost - residualValue) / lifeSpan;
+    document.getElementById("depreciationResult").innerText = "Amortissement annuel : " + annualDepreciation.toFixed(2) + " €";
+}
+
+// Autres fonctions de calculs pour les autres outils...
+</script>
+
 </body>
 </html>
