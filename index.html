@@ -2,52 +2,87 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Frise Universelle - Échelle Historique</title>
-  <meta name="description" content="Explorez votre position dans l’histoire de l’univers, de l’apparition des hominidés au XXIe siècle.">
+  <title>Frise Historique Universelle</title>
+  <meta name="description" content="Visualisez votre place dans l’histoire de l’univers, de l’apparition des hominidés à aujourd’hui.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: Arial, sans-serif; background: #fdfdfd; color: #333; text-align: center; padding: 2em; }
+    body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      color: #222;
+      transition: background 0.3s, color 0.3s;
+    }
+    .dark {
+      background: #111;
+      color: #eee;
+    }
+    header {
+      text-align: center;
+      padding: 1.5em;
+    }
+    main {
+      max-width: 700px;
+      margin: auto;
+      padding: 1em;
+      text-align: center;
+    }
     input, select, button {
-      padding: 0.5em; font-size: 1em; margin: 0.5em;
+      font-size: 1em;
+      padding: 0.5em;
+      margin: 0.3em;
+      border-radius: 5px;
     }
-    .bar {
-      margin: 2em auto; width: 90%; height: 20px;
-      background: #eee; border-radius: 10px; position: relative;
+    canvas {
+      display: block;
+      margin: 2em auto;
     }
-    .marker {
-      width: 10px; height: 20px; background: red;
-      position: absolute; top: 0; border-radius: 2px;
+    #result {
+      font-size: 1.2em;
+      margin-top: 1.5em;
     }
-    #result { margin-top: 1em; font-size: 1.2em; }
+    .controls {
+      margin-bottom: 1em;
+    }
+    .theme-toggle {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 0.3em 0.6em;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <h1>Frise Historique Universelle</h1>
-  <p>Entrez une année pour voir sa place dans l’histoire selon différentes bases.</p>
+  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+  <header>
+    <h1>Frise Historique Universelle</h1>
+    <p>Visualisez l’année que vous souhaitez dans une échelle cosmique ou humaine.</p>
+  </header>
+  <main>
+    <div class="controls">
+      <input type="number" id="yearInput" placeholder="Ex: -3000, 2024" />
+      <select id="baseSelect" onchange="showPosition()">
+        <option value="-13800000000">Depuis le Big Bang</option>
+        <option value="-4540000000">Depuis la formation de la Terre</option>
+        <option value="-3500000000">Depuis la vie unicellulaire</option>
+        <option value="-1000000000">Depuis la vie multicellulaire</option>
+        <option value="-6000000">Depuis les hominidés</option>
+        <option value="-300000">Depuis Homo sapiens</option>
+        <option value="-10000">Depuis l'agriculture</option>
+        <option value="-3300">Depuis l’écriture</option>
+      </select>
+      <button onclick="showPosition()">Voir</button>
+    </div>
 
-  <input type="number" id="yearInput" placeholder="Ex: -3000, 2024" />
-  
-  <select id="baseSelect">
-    <option value="-13800000000">Depuis le Big Bang</option>
-    <option value="-4540000000">Depuis la formation de la Terre</option>
-    <option value="-3500000000">Depuis la vie unicellulaire</option>
-    <option value="-1000000000">Depuis la vie multicellulaire</option>
-    <option value="-6000000">Depuis les hominidés</option>
-    <option value="-300000">Depuis Homo sapiens</option>
-    <option value="-10000">Depuis l'agriculture</option>
-    <option value="-3300">Depuis l’écriture</option>
-  </select>
-
-  <button onclick="showPosition()">Voir</button>
-
-  <div class="bar">
-    <div class="marker" id="marker"></div>
-  </div>
-
-  <div id="result"></div>
+    <canvas id="timeline" width="600" height="50"></canvas>
+    <div id="result"></div>
+  </main>
 
   <script>
     const today = new Date().getFullYear();
+    const canvas = document.getElementById("timeline");
+    const ctx = canvas.getContext("2d");
 
     const events = {
       "-6000000": "Apparition des hominidés",
@@ -67,25 +102,45 @@
     };
 
     function showPosition() {
-      const year = parseInt(document.getElementById("yearInput").value);
+      const input = parseInt(document.getElementById("yearInput").value);
       const baseYear = parseInt(document.getElementById("baseSelect").value);
-      const barWidth = document.querySelector(".bar").offsetWidth;
+      const baseLabel = document.getElementById("baseSelect").selectedOptions[0].text;
+      const width = canvas.width;
+      const height = canvas.height;
+
+      // Position du marqueur
       const totalRange = today - baseYear;
-      const pos = ((year - baseYear) / totalRange) * barWidth;
+      const percent = ((input - baseYear) / totalRange);
+      const x = Math.max(0, Math.min(percent * width, width - 10));
 
-      const marker = document.getElementById("marker");
-      marker.style.left = Math.max(0, Math.min(pos, barWidth - 10)) + "px";
+      // Nettoyage du canvas
+      ctx.clearRect(0, 0, width, height);
 
-      const percent = ((year - baseYear) / totalRange) * 100;
-      const baseText = document.getElementById("baseSelect").selectedOptions[0].text;
+      // Barre de fond
+      ctx.fillStyle = "#ccc";
+      ctx.fillRect(50, height / 2 - 5, width - 100, 10);
 
-      let resultText = `L'année <strong>${year.toLocaleString("fr-FR")}</strong> représente <strong>${percent.toFixed(9)}%</strong> depuis <em>${baseText.toLowerCase()}</em>.`;
+      // Marqueur de base
+      ctx.fillStyle = "#888";
+      ctx.font = "12px sans-serif";
+      ctx.fillText(baseYear.toLocaleString("fr-FR"), 0, height / 2 + 4);
 
-      if (events[year]) {
-        resultText += `<br><strong>Événement :</strong> ${events[year]}`;
+      // Marqueur rouge
+      ctx.fillStyle = "red";
+      ctx.fillRect(50 + x, height / 2 - 10, 4, 20);
+
+      // Résultat
+      let message = `L'année <strong>${input.toLocaleString("fr-FR")}</strong> représente <strong>${(percent * 100).toFixed(9)}%</strong> depuis <em>${baseLabel.toLowerCase()}</em>.`;
+
+      if (events[input]) {
+        message += `<br><strong>Événement :</strong> ${events[input]}`;
       }
 
-      document.getElementById("result").innerHTML = resultText;
+      document.getElementById("result").innerHTML = message;
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
     }
   </script>
 </body>
