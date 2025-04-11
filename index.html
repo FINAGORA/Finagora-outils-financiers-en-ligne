@@ -1,309 +1,197 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outils Professionnels</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-        header {
-            background: #333;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-        }
-        .container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            padding: 20px;
-        }
-        .tool {
-            width: 300px;
-            margin: 10px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #fff;
-        }
-        .tool h3 {
-            text-align: center;
-        }
-        .tool input, .tool button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            font-size: 1em;
-        }
-        .result {
-            margin-top: 15px;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Outils financiers professionnels : calculateur TCAM, simulateur d’intérêt composé, convertisseur de taux mensuel/annuel. 100% gratuit et rapide.">
+  <meta name="keywords" content="TCAM, taux de croissance, intérêt composé, taux annuel, taux mensuel, finance, simulateur, outil en ligne, calculateur">
+  <meta name="author" content="TonNom">
+  <title>Outils Financiers en Ligne</title>
+  <style>
+    :root {
+      --bg: #f9f9f9;
+      --text: #222;
+      --card: #fff;
+      --primary: #007bff;
+    }
+
+    body.dark {
+      --bg: #121212;
+      --text: #eee;
+      --card: #1e1e1e;
+      --primary: #4dabf7;
+    }
+
+    * {
+      box-sizing: border-box;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 1rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+    }
+
+    section {
+      background: var(--card);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+    }
+
+    label {
+      margin-top: 1rem;
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.6rem;
+      font-size: 1rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      margin-top: 1rem;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    .toggle-theme {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--card);
+      border: 1px solid #ccc;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    <h1>Outils Professionnels</h1>
-    <p>Calculs simples pour les entreprises, finance, et gestion de projet</p>
-</header>
+  <button class="toggle-theme" onclick="toggleTheme()">🌗 Mode sombre</button>
 
-<div class="container">
-    <!-- Calculateur de coûts de production -->
-    <div class="tool">
-        <h3>Calculateur de coûts de production</h3>
-        <input type="number" id="costMaterial" placeholder="Coût matières" />
-        <input type="number" id="costLabor" placeholder="Coût travail" />
-        <input type="number" id="overhead" placeholder="Frais généraux" />
-        <input type="number" id="unitsProduced" placeholder="Unité produite" />
-        <button onclick="calculateProductionCost()">Calculer</button>
-        <div class="result" id="productionResult"></div>
-    </div>
+  <div class="container">
+    <h1>🧮 Outils Financiers Professionnels</h1>
 
-    <!-- Calculateur d’amortissement -->
-    <div class="tool">
-        <h3>Simulateur d’amortissement</h3>
-        <input type="number" id="purchaseCost" placeholder="Coût d’achat" />
-        <input type="number" id="lifeSpan" placeholder="Durée de vie" />
-        <input type="number" id="residualValue" placeholder="Valeur résiduelle" />
-        <button onclick="calculateDepreciation()">Calculer</button>
-        <div class="result" id="depreciationResult"></div>
-    </div>
+    <!-- TCAM -->
+    <section>
+      <h2>📈 Calculateur TCAM</h2>
+      <label>Valeur Initiale (€)</label>
+      <input type="number" id="tcam-initial">
+      <label>Valeur Finale (€)</label>
+      <input type="number" id="tcam-finale">
+      <label>Durée (années)</label>
+      <input type="number" id="tcam-annees">
+      <button onclick="calculerTCAM()">Calculer TCAM</button>
+      <div class="result" id="tcam-result"></div>
+    </section>
 
-    <!-- Générateur de contrat -->
-    <div class="tool">
-        <h3>Générateur de contrat</h3>
-        <input type="text" id="contractName" placeholder="Nom du contrat" />
-        <input type="text" id="contractDate" placeholder="Date" />
-        <input type="text" id="contractClauses" placeholder="Clauses principales" />
-        <button onclick="generateContract()">Générer</button>
-        <div class="result" id="contractResult"></div>
-    </div>
+    <!-- Intérêt composé -->
+    <section>
+      <h2>💰 Intérêt Composé</h2>
+      <label>Capital initial (€)</label>
+      <input type="number" id="capital-initial">
+      <label>Taux annuel (%)</label>
+      <input type="number" id="taux-annuel">
+      <label>Durée (années)</label>
+      <input type="number" id="duree">
+      <button onclick="calculerInteretCompose()">Calculer</button>
+      <div class="result" id="interet-result"></div>
+    </section>
 
-    <!-- Simulateur de rentabilité -->
-    <div class="tool">
-        <h3>Simulateur de rentabilité</h3>
-        <input type="number" id="investmentAmount" placeholder="Montant investissement" />
-        <input type="number" id="rateOfReturn" placeholder="Taux de retour (%)" />
-        <input type="number" id="investmentPeriod" placeholder="Période (années)" />
-        <button onclick="calculateProfitability()">Calculer</button>
-        <div class="result" id="profitabilityResult"></div>
-    </div>
+    <!-- Conversion de taux -->
+    <section>
+      <h2>🔄 Convertisseur Taux</h2>
+      <label>Taux mensuel (%)</label>
+      <input type="number" id="taux-mensuel">
+      <button onclick="convertirMensuelVersAnnuel()">→ Taux annuel</button>
+      <div class="result" id="taux-annuel-result"></div>
 
-    <!-- Carte des risques -->
-    <div class="tool">
-        <h3>Carte des risques d’incendie</h3>
-        <input type="text" id="riskZone" placeholder="Zone géographique" />
-        <button onclick="showFireRisk()">Afficher risque</button>
-        <div class="result" id="fireRiskResult"></div>
-    </div>
+      <label style="margin-top:1rem;">Taux annuel (%)</label>
+      <input type="number" id="taux-annuel-conv">
+      <button onclick="convertirAnnuelVersMensuel()">→ Taux mensuel</button>
+      <div class="result" id="taux-mensuel-result"></div>
+    </section>
+  </div>
 
-    <!-- Générateur de roadmap -->
-    <div class="tool">
-        <h3>Générateur de roadmap</h3>
-        <input type="text" id="roadmapTitle" placeholder="Titre de la roadmap" />
-        <input type="text" id="roadmapSteps" placeholder="Étapes" />
-        <input type="date" id="roadmapDate" placeholder="Date de début" />
-        <button onclick="generateRoadmap()">Générer</button>
-        <div class="result" id="roadmapResult"></div>
-    </div>
-
-    <!-- Calculateur de l'empreinte carbone -->
-    <div class="tool">
-        <h3>Calculateur de l'empreinte carbone</h3>
-        <input type="number" id="activityType" placeholder="Activité (ex. transport)" />
-        <input type="number" id="quantity" placeholder="Quantité" />
-        <button onclick="calculateCarbonFootprint()">Calculer</button>
-        <div class="result" id="carbonResult"></div>
-    </div>
-
-    <!-- Suivi des KPI -->
-    <div class="tool">
-        <h3>Suivi des KPI</h3>
-        <input type="number" id="salesGoal" placeholder="Objectif de ventes" />
-        <input type="number" id="actualSales" placeholder="Ventes réelles" />
-        <button onclick="trackKPI()">Suivre KPI</button>
-        <div class="result" id="kpiResult"></div>
-    </div>
-
-    <!-- Suivi des événements -->
-    <div class="tool">
-        <h3>Suivi des événements</h3>
-        <input type="text" id="eventTitle" placeholder="Nom de l’événement" />
-        <input type="date" id="eventDate" placeholder="Date de l’événement" />
-        <button onclick="trackEvent()">Suivre événement</button>
-        <div class="result" id="eventResult"></div>
-    </div>
-
-    <!-- Calculateur de temps de travail -->
-    <div class="tool">
-        <h3>Calculateur de temps de travail</h3>
-        <input type="number" id="workHoursPerDay" placeholder="Heures par jour" />
-        <input type="number" id="workDaysPerWeek" placeholder="Jours par semaine" />
-        <button onclick="calculateWorkHours()">Calculer</button>
-        <div class="result" id="workHoursResult"></div>
-    </div>
-
-    <!-- Calculateur de TCAM -->
-    <div class="tool">
-        <h3>Calculateur de TCAM</h3>
-        <input type="number" id="initialValue" placeholder="Valeur initiale" />
-        <input type="number" id="finalValue" placeholder="Valeur finale" />
-        <input type="number" id="yearsPeriod" placeholder="Nombre d'années" />
-        <button onclick="calculateCAGR()">Calculer TCAM</button>
-        <div class="result" id="cagrResult"></div>
-    </div>
-</div>
-
-<script>
-// Fonction de calcul du coût de production par unité
-function calculateProductionCost() {
-    let costMaterial = parseFloat(document.getElementById("costMaterial").value);
-    let costLabor = parseFloat(document.getElementById("costLabor").value);
-    let overhead = parseFloat(document.getElementById("overhead").value);
-    let unitsProduced = parseFloat(document.getElementById("unitsProduced").value);
-    
-    if (isNaN(costMaterial) || isNaN(costLabor) || isNaN(overhead) || isNaN(unitsProduced)) {
-        document.getElementById("productionResult").innerText = "Veuillez entrer des valeurs valides.";
-        return;
+  <script>
+    function calculerTCAM() {
+      const vi = parseFloat(document.getElementById("tcam-initial").value);
+      const vf = parseFloat(document.getElementById("tcam-finale").value);
+      const n = parseFloat(document.getElementById("tcam-annees").value);
+      if (vi > 0 && vf > 0 && n > 0) {
+        const tcam = ((vf / vi) ** (1 / n) - 1) * 100;
+        document.getElementById("tcam-result").textContent = "TCAM : " + tcam.toFixed(2) + " %";
+      } else {
+        document.getElementById("tcam-result").textContent = "Veuillez remplir tous les champs.";
+      }
     }
-    
-    let totalCost = costMaterial + costLabor + overhead;
-    let costPerUnit = totalCost / unitsProduced;
-    document.getElementById("productionResult").innerText = "Coût par unité produite : " + costPerUnit.toFixed(2) + " €";
-}
 
-// Fonction de calcul d'amortissement
-function calculateDepreciation() {
-    let purchaseCost = parseFloat(document.getElementById("purchaseCost").value);
-    let lifeSpan = parseFloat(document.getElementById("lifeSpan").value);
-    let residualValue = parseFloat(document.getElementById("residualValue").value);
-    
-    if (isNaN(purchaseCost) || isNaN(lifeSpan) || isNaN(residualValue)) {
-        document.getElementById("depreciationResult").innerText = "Veuillez entrer des valeurs valides.";
-        return;
+    function calculerInteretCompose() {
+      const ci = parseFloat(document.getElementById("capital-initial").value);
+      const taux = parseFloat(document.getElementById("taux-annuel").value) / 100;
+      const n = parseFloat(document.getElementById("duree").value);
+      if (ci > 0 && taux >= 0 && n > 0) {
+        const montantFinal = ci * Math.pow(1 + taux, n);
+        document.getElementById("interet-result").textContent = "Montant final : " + montantFinal.toFixed(2) + " €";
+      } else {
+        document.getElementById("interet-result").textContent = "Champs invalides.";
+      }
     }
-    
-    let annualDepreciation = (purchaseCost - residualValue) / lifeSpan;
-    document.getElementById("depreciationResult").innerText = "Amortissement annuel : " + annualDepreciation.toFixed(2) + " €";
-}
 
-// Fonction de génération de contrat
-function generateContract() {
-    let name = document.getElementById("contractName").value;
-    let date = document.getElementById("contractDate").value;
-    let clauses = document.getElementById("contractClauses").value;
-    
-    document.getElementById("contractResult").innerHTML = `
-        <strong>Contrat : </strong>${name}<br>
-        <strong>Date : </strong>${date}<br>
-        <strong>Clauses : </strong>${clauses}`;
-}
-
-// Fonction de rentabilité
-function calculateProfitability() {
-    let investmentAmount = parseFloat(document.getElementById("investmentAmount").value);
-    let rateOfReturn = parseFloat(document.getElementById("rateOfReturn").value);
-    let investmentPeriod = parseFloat(document.getElementById("investmentPeriod").value);
-    
-    if (isNaN(investmentAmount) || isNaN(rateOfReturn) || isNaN(investmentPeriod)) {
-        document.getElementById("profitabilityResult").innerText = "Veuillez entrer des valeurs valides.";
-        return;
+    function convertirMensuelVersAnnuel() {
+      const tauxMensuel = parseFloat(document.getElementById("taux-mensuel").value);
+      if (tauxMensuel >= 0) {
+        const tauxAnnuel = (Math.pow(1 + tauxMensuel / 100, 12) - 1) * 100;
+        document.getElementById("taux-annuel-result").textContent = "Taux annuel équivalent : " + tauxAnnuel.toFixed(2) + " %";
+      }
     }
-    
-    let profitability = investmentAmount * Math.pow(1 + rateOfReturn / 100, investmentPeriod);
-    document.getElementById("profitabilityResult").innerText = "Rentabilité à la fin de la période : " + profitability.toFixed(2) + " €";
-}
 
-// Fonction pour afficher les risques d'incendie (exemple basique)
-function showFireRisk() {
-    let riskZone = document.getElementById("riskZone").value;
-    document.getElementById("fireRiskResult").innerText = `Risque d’incendie dans la zone : ${riskZone}`;
-}
-
-// Fonction pour générer la roadmap
-function generateRoadmap() {
-    let title = document.getElementById("roadmapTitle").value;
-    let steps = document.getElementById("roadmapSteps").value;
-    let date = document.getElementById("roadmapDate").value;
-    
-    document.getElementById("roadmapResult").innerHTML = `
-        <strong>Roadmap : </strong>${title}<br>
-        <strong>Étapes : </strong>${steps}<br>
-        <strong>Date : </strong>${date}`;
-}
-
-// Fonction pour calculer l'empreinte carbone
-function calculateCarbonFootprint() {
-    let activity = document.getElementById("activityType").value;
-    let quantity = parseFloat(document.getElementById("quantity").value);
-    
-    if (isNaN(quantity)) {
-        document.getElementById("carbonResult").innerText = "Veuillez entrer une quantité valide.";
-        return;
+    function convertirAnnuelVersMensuel() {
+      const tauxAnnuel = parseFloat(document.getElementById("taux-annuel-conv").value);
+      if (tauxAnnuel >= 0) {
+        const tauxMensuel = (Math.pow(1 + tauxAnnuel / 100, 1 / 12) - 1) * 100;
+        document.getElementById("taux-mensuel-result").textContent = "Taux mensuel équivalent : " + tauxMensuel.toFixed(2) + " %";
+      }
     }
-    
-    document.getElementById("carbonResult").innerText = `Empreinte carbone de l’activité ${activity} : ${quantity * 0.5} kg CO2`; // Exemple simplifié
-}
 
-// Fonction pour suivre les KPIs
-function trackKPI() {
-    let salesGoal = parseFloat(document.getElementById("salesGoal").value);
-    let actualSales = parseFloat(document.getElementById("actualSales").value);
-    
-    if (isNaN(salesGoal) || isNaN(actualSales)) {
-        document.getElementById("kpiResult").innerText = "Veuillez entrer des valeurs valides.";
-        return;
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
     }
-    
-    let kpi = (actualSales / salesGoal) * 100;
-    document.getElementById("kpiResult").innerText = `KPI : ${kpi.toFixed(2)}%`;
-}
-
-// Fonction pour suivre les événements
-function trackEvent() {
-    let title = document.getElementById("eventTitle").value;
-    let date = document.getElementById("eventDate").value;
-    
-    document.getElementById("eventResult").innerHTML = `
-        <strong>Événement : </strong>${title}<br>
-        <strong>Date : </strong>${date}`;
-}
-
-// Fonction pour calculer le temps de travail
-function calculateWorkHours() {
-    let workHoursPerDay = parseFloat(document.getElementById("workHoursPerDay").value);
-    let workDaysPerWeek = parseFloat(document.getElementById("workDaysPerWeek").value);
-    
-    if (isNaN(workHoursPerDay) || isNaN(workDaysPerWeek)) {
-        document.getElementById("workHoursResult").innerText = "Veuillez entrer des valeurs valides.";
-        return;
-    }
-    
-    let totalHours = workHoursPerDay * workDaysPerWeek;
-    document.getElementById("workHoursResult").innerText = `Temps de travail total par semaine : ${totalHours} heures`;
-}
-
-// Fonction pour calculer le TCAM
-function calculateCAGR() {
-    let initialValue = parseFloat(document.getElementById("initialValue").value);
-    let finalValue = parseFloat(document.getElementById("finalValue").value);
-    let yearsPeriod = parseFloat(document.getElementById("yearsPeriod").value);
-    
-    if (isNaN(initialValue) || isNaN(finalValue) || isNaN(yearsPeriod)) {
-        document.getElementById("cagrResult").innerText = "Veuillez entrer des valeurs valides.";
-        return;
-    }
-    
-    let cagr = Math.pow(finalValue / initialValue, 1 / yearsPeriod) - 1;
-    document.getElementById("cagrResult").innerText = `TCAM : ${(cagr * 100).toFixed(2)}%`;
-}
-</script>
+  </script>
 
 </body>
 </html>
