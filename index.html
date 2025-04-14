@@ -11,7 +11,13 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://example.com/preview.jpg" />
   <meta property="og:url" content="https://example.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Outils Financiers Gratuits | TCAM, Intérêt Composé, Taux" />
+  <meta name="twitter:description" content="Simulez votre croissance financière avec nos outils : TCAM, intérêt composé, taux mensuel/annuel. Export Excel/CSV, graphique et historique inclus." />
+  <meta name="twitter:image" content="https://example.com/preview.jpg" />
   <link rel="canonical" href="https://example.com" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.css" />
 
   <title>Outils Financiers | TCAM, Intérêts, Taux</title>
 
@@ -158,8 +164,8 @@
   </main>
 
   <!-- Libs -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script async defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script async defer src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
   <script>
     const val = id => parseFloat(document.getElementById(id).value) || 0;
@@ -178,7 +184,7 @@
     function calcTCAM() {
       const vi = val('tcam-initial'), vf = val('tcam-finale'), n = val('tcam-annees');
       if (vi && vf && n) {
-        const tcam = (((vf / vi) ** (1 / n) - 1) * 100).toFixed(2);
+        const tcam = (((vf / vi) ** (1 / n) - 1) * 100).toFixed(2).replace('.', ',');
         set("tcam-result", `TCAM : ${tcam} %`);
         document.getElementById("tcam-expert").textContent = `Formule : ((VF / VI)^(1/n)) - 1`;
         document.getElementById("tcam-expert").style.display = "block";
@@ -190,9 +196,9 @@
     function calcInteret() {
       const ci = val('capital'), taux = val('taux') / 100, n = val('duree');
       if (ci && n) {
-        const final = (ci * (1 + taux) ** n).toFixed(2);
+        const final = (ci * (1 + taux) ** n).toFixed(2).replace('.', ',');
         set("interet-result", `Montant final : ${final} €`);
-        interetHistory.push({ "Capital Initial (€)": ci, "Taux (%)": (taux * 100).toFixed(2), "Durée": n, "Montant Final (€)": final });
+        interetHistory.push({ "Capital Initial (€)": ci, "Taux (%)": (taux * 100).toFixed(2).replace('.', ','), "Durée": n, "Montant Final (€)": final });
         updateTable("interet-history-table", Object.keys(interetHistory[0]), interetHistory);
         renderChart(ci, taux, n);
       }
@@ -202,8 +208,8 @@
       const m = val('mensuel');
       if (m >= 0) {
         const a = ((1 + m / 100) ** 12 - 1) * 100;
-        set("result-annuel", `Taux annuel équivalent : ${a.toFixed(2)} %`);
-        tauxHistory.push({ "Conversion": "Mensuel → Annuel", "Entrée (%)": m, "Résultat (%)": a.toFixed(2) });
+        set("result-annuel", `Taux annuel équivalent : ${a.toFixed(2).replace('.', ',')} %`);
+        tauxHistory.push({ "Conversion": "Mensuel → Annuel", "Entrée (%)": m, "Résultat (%)": a.toFixed(2).replace('.', ',') });
         updateTable("taux-history-table", Object.keys(tauxHistory[0]), tauxHistory);
       }
     }
@@ -212,39 +218,38 @@
       const a = val('annuel');
       if (a >= 0) {
         const m = ((1 + a / 100) ** (1 / 12) - 1) * 100;
-        set("result-mensuel", `Taux mensuel équivalent : ${m.toFixed(2)} %`);
-        tauxHistory.push({ "Conversion": "Annuel → Mensuel", "Entrée (%)": a, "Résultat (%)": m.toFixed(2) });
+        set("result-mensuel", `Taux mensuel équivalent : ${m.toFixed(2).replace('.', ',')} %`);
+        tauxHistory.push({ "Conversion": "Annuel → Mensuel", "Entrée (%)": a, "Résultat (%)": m.toFixed(2).replace('.', ',') });
         updateTable("taux-history-table", Object.keys(tauxHistory[0]), tauxHistory);
       }
     }
 
-    function exportData(data, name, format) {
-      const ws = XLSX.utils.json_to_sheet(data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, name);
-
-      if (format === 'xlsx') {
-        XLSX.writeFile(wb, name + ".xlsx");
-      } else if (format === 'csv') {
-        const csv = XLSX.utils.sheet_to_csv(ws);
-        const blob = new Blob([csv], { type: "text/csv" });
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = name + ".csv";
-        a.click();
-        URL.revokeObjectURL(a.href);
-      }
+    function formatDataForExport(data) {
+      return data.map(row => {
+        return Object.keys(row).reduce((acc, key) => {
+          acc[key] = typeof row[key] === 'number' ? row[key].toFixed(2).replace('.', ',') : row[key];
+          return acc;
+        }, {});
+      });
     }
 
-    function exportTCAM() { exportData(tcamHistory, "TCAM", "csv"); }
-    function exportInteret() { exportData(interetHistory, "InteretCompose", "csv"); }
-    function exportTaux() { exportData(tauxHistory, "ConvertisseurTaux", "csv"); }
+    function exportData(data, name) {
+      const formattedData = formatDataForExport(data);
+      const ws = XLSX.utils.json_to_sheet(formattedData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, name);
+      XLSX.writeFile(wb, name + ".xlsx");
+    }
+
+    function exportTCAM() { exportData(tcamHistory, "TCAM"); }
+    function exportInteret() { exportData(interetHistory, "InteretCompose"); }
+    function exportTaux() { exportData(tauxHistory, "ConvertisseurTaux"); }
 
     function renderChart(ci, taux, n) {
       const labels = [], data = [];
       for (let i = 0; i <= n; i++) {
         labels.push("Année " + i);
-        data.push((ci * (1 + taux) ** i).toFixed(2));
+        data.push((ci * (1 + taux) ** i).toFixed(2).replace('.', ','));
       }
       const ctx = document.getElementById('chart').getContext('2d');
       document.getElementById('chart').classList.remove('hidden');
