@@ -84,6 +84,7 @@
       border-radius: 20px;
       font-size: 0.9rem;
       cursor: pointer;
+      color: var(--text); /* Ajout de la couleur de texte */
     }
     table {
       width: 100%;
@@ -98,6 +99,9 @@
     canvas {
       max-width: 100%;
       margin-top: 1rem;
+    }
+    .hidden {
+      display: none;
     }
   </style>
 </head>
@@ -131,7 +135,7 @@
       <input id="duree" type="number" />
       <button onclick="calcInteret()">Calculer</button>
       <div id="interet-result" class="result"></div>
-      <canvas id="chart"></canvas>
+      <canvas id="chart" class="hidden"></canvas>
       <div><strong>Historique</strong> <button onclick="exportInteret()">📤 Exporter</button></div>
       <table id="interet-history-table"><thead></thead><tbody></tbody></table>
     </section>
@@ -168,7 +172,7 @@
       const thead = table.querySelector("thead");
       const tbody = table.querySelector("tbody");
       thead.innerHTML = "<tr>" + columns.map(c => `<th>${c}</th>`).join('') + "</tr>";
-      tbody.innerHTML = data.map(row => `<tr>${columns.map(k => `<td>\\${row[k]}</td>`).join('')}</tr>`).join('');
+      tbody.innerHTML = data.map(row => `<tr>${columns.map(k => `<td>${row[k]}</td>`).join('')}</tr>`).join('');
     }
 
     function calcTCAM() {
@@ -214,24 +218,27 @@
       }
     }
 
-    function exportTCAM() { exportBoth(tcamHistory, "TCAM"); }
-    function exportInteret() { exportBoth(interetHistory, "InteretCompose"); }
-    function exportTaux() { exportBoth(tauxHistory, "ConvertisseurTaux"); }
-
-    function exportBoth(data, name) {
+    function exportData(data, name, format) {
       const ws = XLSX.utils.json_to_sheet(data);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, name);
-      XLSX.writeFile(wb, name + ".xlsx");
 
-      const csv = XLSX.utils.sheet_to_csv(ws);
-      const blob = new Blob([csv], { type: "text/csv" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = name + ".csv";
-      a.click();
-      URL.revokeObjectURL(a.href);
+      if (format === 'xlsx') {
+        XLSX.writeFile(wb, name + ".xlsx");
+      } else if (format === 'csv') {
+        const csv = XLSX.utils.sheet_to_csv(ws);
+        const blob = new Blob([csv], { type: "text/csv" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = name + ".csv";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
     }
+
+    function exportTCAM() { exportData(tcamHistory, "TCAM", "csv"); }
+    function exportInteret() { exportData(interetHistory, "InteretCompose", "csv"); }
+    function exportTaux() { exportData(tauxHistory, "ConvertisseurTaux", "csv"); }
 
     function renderChart(ci, taux, n) {
       const labels = [], data = [];
@@ -240,6 +247,7 @@
         data.push((ci * (1 + taux) ** i).toFixed(2));
       }
       const ctx = document.getElementById('chart').getContext('2d');
+      document.getElementById('chart').classList.remove('hidden');
       if (window.myChart) window.myChart.destroy();
       window.myChart = new Chart(ctx, {
         type: 'line',
