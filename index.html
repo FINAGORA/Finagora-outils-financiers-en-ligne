@@ -7,14 +7,6 @@
   <meta name="keywords" content="finance, TCAM, intérêt composé, taux, convertisseur, outils, gratuit, simulateur" />
   <meta name="author" content="TonNom" />
 
-  <!-- SEO Open Graph -->
-  <meta property="og:title" content="Outils Financiers | TCAM, Taux, Intérêts" />
-  <meta property="og:description" content="Découvrez des outils financiers gratuits pour calculer le TCAM, l'intérêt composé et convertir des taux mensuels et annuels." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="URL_DE_VOTRE_IMAGE" />
-  <meta property="og:url" content="URL_DE_VOTRE_SITE" />
-  <link rel="canonical" href="URL_DE_VOTRE_SITE" />
-
   <title>Outils Financiers | TCAM, Taux, Intérêts</title>
 
   <style>
@@ -91,7 +83,21 @@
       margin-top: 1rem;
       font-weight: bold;
     }
-
+    .copy-btn {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      padding: 0.4rem 0.8rem;
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .history {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      padding-left: 1rem;
+    }
     .toggle-theme {
       position: fixed;
       top: 1rem;
@@ -102,15 +108,11 @@
       border-radius: 20px;
       font-size: 0.9rem;
       cursor: pointer;
-      color: var(--text); /* Texte visible selon le thème */
+      color: var(--text);
     }
-
     body.dark .toggle-theme {
       border: 1px solid #444;
-      background: var(--card);
-      color: var(--text); /* Clair sur fond sombre */
     }
-
     @media (max-width: 600px) {
       body { padding: 0.8rem; }
       section { padding: 1rem; }
@@ -133,6 +135,8 @@
       <input id="tcam-annees" type="number" />
       <button onclick="calcTCAM()">Calculer TCAM</button>
       <div class="result" id="tcam-result"></div>
+      <button class="copy-btn" onclick="copyText('tcam-result')">📋 Copier</button>
+      <div class="history" id="history-tcam"></div>
     </section>
 
     <section>
@@ -145,6 +149,8 @@
       <input id="duree" type="number" />
       <button onclick="calcInteret()">Calculer</button>
       <div class="result" id="interet-result"></div>
+      <button class="copy-btn" onclick="copyText('interet-result')">📋 Copier</button>
+      <div class="history" id="history-interet"></div>
     </section>
 
     <section>
@@ -153,11 +159,15 @@
       <input id="mensuel" type="number" />
       <button onclick="mensuelVersAnnuel()">→ Taux annuel</button>
       <div class="result" id="result-annuel"></div>
+      <button class="copy-btn" onclick="copyText('result-annuel')">📋 Copier</button>
+      <div class="history" id="history-mensuel-annuel"></div>
 
       <label for="annuel" style="margin-top:1rem;">Taux annuel (%)</label>
       <input id="annuel" type="number" />
       <button onclick="annuelVersMensuel()">→ Taux mensuel</button>
       <div class="result" id="result-mensuel"></div>
+      <button class="copy-btn" onclick="copyText('result-mensuel')">📋 Copier</button>
+      <div class="history" id="history-annuel-mensuel"></div>
     </section>
   </main>
 
@@ -165,24 +175,64 @@
     const val = id => parseFloat(document.getElementById(id).value) || 0;
     const out = (id, text) => document.getElementById(id).textContent = text;
 
+    function addToHistory(id, text) {
+      const container = document.getElementById(id);
+      const entry = document.createElement('div');
+      entry.textContent = `• ${text}`;
+      container.prepend(entry);
+    }
+
+    function copyText(resultId) {
+      const text = document.getElementById(resultId).textContent;
+      if (text) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert("Résultat copié !");
+        });
+      }
+    }
+
     function calcTCAM() {
       const vi = val('tcam-initial'), vf = val('tcam-finale'), n = val('tcam-annees');
-      out("tcam-result", (vi && vf && n) ? `TCAM : ${(((vf/vi)**(1/n)-1)*100).toFixed(2)} %` : "Champs manquants.");
+      if (vi && vf && n) {
+        const tcam = (((vf / vi) ** (1 / n)) - 1) * 100;
+        const result = `TCAM : ${tcam.toFixed(2)} %`;
+        out("tcam-result", result);
+        addToHistory("history-tcam", result);
+      } else {
+        out("tcam-result", "Champs manquants.");
+      }
     }
 
     function calcInteret() {
-      const ci = val('capital'), taux = val('taux')/100, n = val('duree');
-      out("interet-result", (ci && taux >= 0 && n) ? `Montant final : ${(ci*(1+taux)**n).toFixed(2)} €` : "Champs invalides.");
+      const ci = val('capital'), taux = val('taux') / 100, n = val('duree');
+      if (ci && taux >= 0 && n) {
+        const montant = ci * (1 + taux) ** n;
+        const result = `Montant final : ${montant.toFixed(2)} €`;
+        out("interet-result", result);
+        addToHistory("history-interet", result);
+      } else {
+        out("interet-result", "Champs invalides.");
+      }
     }
 
     function mensuelVersAnnuel() {
       const m = val('mensuel');
-      out("result-annuel", m >= 0 ? `Taux annuel équivalent : ${((1 + m/100)**12 - 1).toFixed(2)} %` : "");
+      if (m >= 0) {
+        const tauxAnnuel = ((1 + m / 100) ** 12 - 1) * 100;
+        const result = `Taux annuel équivalent : ${tauxAnnuel.toFixed(2)} %`;
+        out("result-annuel", result);
+        addToHistory("history-mensuel-annuel", result);
+      }
     }
 
     function annuelVersMensuel() {
       const a = val('annuel');
-      out("result-mensuel", a >= 0 ? `Taux mensuel équivalent : ${((1 + a/100)**(1/12) - 1).toFixed(2)} %` : "");
+      if (a >= 0) {
+        const tauxMensuel = ((1 + a / 100) ** (1 / 12) - 1) * 100;
+        const result = `Taux mensuel équivalent : ${tauxMensuel.toFixed(2)} %`;
+        out("result-mensuel", result);
+        addToHistory("history-annuel-mensuel", result);
+      }
     }
   </script>
 </body>
