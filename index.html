@@ -194,7 +194,10 @@
     }
 
     function calcInteret() {
-      const ci = val('capital'), taux = val('taux') / 100, n = val('duree');
+      const ci = val('capital');
+      const taux = val('taux') / 100;
+      const n = val('duree');
+
       if (ci && n) {
         const final = (ci * (1 + taux) ** n).toFixed(2).replace('.', ',');
         set("interet-result", `Montant final : ${final} €`);
@@ -246,21 +249,27 @@
     function exportTaux() { exportData(tauxHistory, "ConvertisseurTaux"); }
 
     function renderChart(ci, taux, n) {
-      const labels = [], data = [];
+      const labels = [];
+      const data = [];
       for (let i = 0; i <= n; i++) {
         labels.push("Année " + i);
-        data.push((ci * (1 + taux) ** i).toFixed(2).replace('.', ','));
+        data.push(parseFloat((ci * (1 + taux) ** i).toFixed(2))); // Assurez-vous que les données sont des nombres
       }
+
+      // Vérifiez si les labels et les données sont correctement générés
+      console.log("Labels:", labels);
+      console.log("Data:", data);
+
       const ctx = document.getElementById('chart').getContext('2d');
       document.getElementById('chart').classList.remove('hidden');
       if (window.myChart) window.myChart.destroy();
       window.myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels,
+          labels: labels,
           datasets: [{
             label: "Évolution du capital (€)",
-            data,
+            data: data,
             borderColor: "#007bff",
             fill: false,
             tension: 0.1
