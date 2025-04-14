@@ -6,7 +6,13 @@
   <meta name="description" content="Outils financiers gratuits en ligne : TCAM, intérêt composé, convertisseur de taux. Ultra rapide et sans API." />
   <meta name="keywords" content="finance, TCAM, intérêt composé, taux, convertisseur, outils, gratuit, simulateur" />
   <meta name="author" content="TonNom" />
+  <meta property="og:title" content="Outils Financiers | TCAM, Taux, Intérêts" />
+  <meta property="og:description" content="Découvrez des outils financiers gratuits pour calculer le TCAM, l'intérêt composé et convertir des taux mensuels et annuels." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="URL_DE_VOTRE_IMAGE" />
+  <meta property="og:url" content="URL_DE_VOTRE_SITE" />
   <title>Outils Financiers | TCAM, Taux, Intérêts</title>
+  <link rel="canonical" href="URL_DE_VOTRE_SITE" />
   <style>
     :root {
       --bg: #f5f5f5;
@@ -91,6 +97,10 @@
       border-radius: 20px;
       font-size: 0.9rem;
       cursor: pointer;
+      color: var(--text); /* Visibilité en mode clair */
+    }
+    body.dark .toggle-theme {
+      color: var(--card); /* Visibilité en mode sombre */
     }
     @media (max-width: 600px) {
       body { padding: 0.8rem; }
