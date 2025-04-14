@@ -6,13 +6,17 @@
   <meta name="description" content="Outils financiers gratuits en ligne : TCAM, intérêt composé, convertisseur de taux. Ultra rapide et sans API." />
   <meta name="keywords" content="finance, TCAM, intérêt composé, taux, convertisseur, outils, gratuit, simulateur" />
   <meta name="author" content="TonNom" />
+
+  <!-- SEO Open Graph -->
   <meta property="og:title" content="Outils Financiers | TCAM, Taux, Intérêts" />
   <meta property="og:description" content="Découvrez des outils financiers gratuits pour calculer le TCAM, l'intérêt composé et convertir des taux mensuels et annuels." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="URL_DE_VOTRE_IMAGE" />
   <meta property="og:url" content="URL_DE_VOTRE_SITE" />
-  <title>Outils Financiers | TCAM, Taux, Intérêts</title>
   <link rel="canonical" href="URL_DE_VOTRE_SITE" />
+
+  <title>Outils Financiers | TCAM, Taux, Intérêts</title>
+
   <style>
     :root {
       --bg: #f5f5f5;
@@ -87,6 +91,7 @@
       margin-top: 1rem;
       font-weight: bold;
     }
+
     .toggle-theme {
       position: fixed;
       top: 1rem;
@@ -97,11 +102,15 @@
       border-radius: 20px;
       font-size: 0.9rem;
       cursor: pointer;
-      color: var(--text); /* Visibilité en mode clair */
+      color: var(--text); /* Texte visible selon le thème */
     }
+
     body.dark .toggle-theme {
-      color: var(--card); /* Visibilité en mode sombre */
+      border: 1px solid #444;
+      background: var(--card);
+      color: var(--text); /* Clair sur fond sombre */
     }
+
     @media (max-width: 600px) {
       body { padding: 0.8rem; }
       section { padding: 1rem; }
