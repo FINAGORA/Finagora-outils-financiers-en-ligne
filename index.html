@@ -168,7 +168,7 @@
       const thead = table.querySelector("thead");
       const tbody = table.querySelector("tbody");
       thead.innerHTML = "<tr>" + columns.map(c => `<th>${c}</th>`).join('') + "</tr>";
-      tbody.innerHTML = data.map(row => `<tr>${columns.map(k => `<td>${row[k]}</td>`).join('')}</tr>`).join('');
+      tbody.innerHTML = data.map(row => `<tr>${columns.map(k => `<td>\\${row[k]}</td>`).join('')}</tr>`).join('');
     }
 
     function calcTCAM() {
