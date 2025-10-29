@@ -25,6 +25,10 @@
     :root {
       --primary-color: #4361ee;
       --secondary-color: #3f37c9;
+      --investissement-color: #4cc9f0;
+      --economie-color: #f72585;
+      --coup-de-coeur-color: #ff9800;
+      --fiscalite-color: #7c4dff;
       --light-color: #f8f9fa;
       --dark-color: #212529;
       --gray-color: #6c757d;
@@ -67,8 +71,8 @@
 
     .container {
       max-width: 800px;
-      margin: auto;
-      padding: 1rem;
+      margin: 2rem auto;
+      padding: 0 1rem;
     }
 
     .header-link {
@@ -204,10 +208,19 @@
     .export-btn:hover {
       background: rgba(67, 97, 238, 0.3);
     }
+
+    .history-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body>
+  <!-- Bouton de thème en haut à droite -->
   <button class="toggle-theme" onclick="document.body.classList.toggle('dark')">🌓 Thème sombre</button>
+
   <main class="container">
     <h1>
       <a href="https://finagora.github.io/Finagora-actu" target="_blank" rel="noopener noreferrer" class="header-link">
@@ -228,7 +241,7 @@
       <button onclick="calcTCAM()">Calculer TCAM</button>
       <div id="tcam-result" class="result"></div>
       <div id="tcam-expert" style="display:none; margin-top: 0.5rem; font-size: 0.9rem; color: var(--gray-color);"></div>
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+      <div class="history-title">
         <strong>Historique des calculs</strong>
         <button class="export-btn" onclick="exportTCAM()">📤 Exporter</button>
       </div>
@@ -250,7 +263,7 @@
       <button onclick="calcInteret()">Calculer</button>
       <div id="interet-result" class="result"></div>
       <canvas id="chart" class="hidden"></canvas>
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+      <div class="history-title">
         <strong>Historique des calculs</strong>
         <button class="export-btn" onclick="exportInteret()">📤 Exporter</button>
       </div>
@@ -277,7 +290,7 @@
           <div id="result-mensuel" class="result"></div>
         </div>
       </div>
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+      <div class="history-title">
         <strong>Historique des conversions</strong>
         <button class="export-btn" onclick="exportTaux()">📤 Exporter</button>
       </div>
@@ -368,7 +381,7 @@
     }
 
     function exportTCAM() { exportData(tcamHistory, "Historique_TCAM"); }
-    function exportInteret() { exportData(interetHistory, "Historique_Interet_Compose"); }
+    function exportInteret() { exportData(interetHistory, "Historique_Intérêt_Composé"); }
     function exportTaux() { exportData(tauxHistory, "Historique_Convertisseur_Taux"); }
 
     function renderChart(ci, taux, n) {
