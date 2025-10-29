@@ -5,179 +5,297 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Outils financiers gratuits et rapides : TCAM, intérêt composé, convertisseur de taux. Export CSV et Excel. Graphiques et historique inclus." />
   <meta name="keywords" content="outil financier, TCAM, taux, intérêt composé, taux annuel, taux mensuel, convertisseur, simulateur, calculatrice financière" />
-  <meta name="author" content="TonNom" />
+  <meta name="author" content="Finagora" />
   <meta property="og:title" content="Outils Financiers Gratuits | TCAM, Intérêt Composé, Taux" />
   <meta property="og:description" content="Simulez votre croissance financière avec nos outils : TCAM, intérêt composé, taux mensuel/annuel. Export Excel/CSV, graphique et historique inclus." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://example.com/preview.jpg" />
-  <meta property="og:url" content="https://example.com" />
+  <meta property="og:image" content="https://finagora.fr/assets/og-image-outils.jpg" />
+  <meta property="og:url" content="https://finagora.github.io/Finagora-outils-financiers-en-ligne" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Outils Financiers Gratuits | TCAM, Intérêt Composé, Taux" />
   <meta name="twitter:description" content="Simulez votre croissance financière avec nos outils : TCAM, intérêt composé, taux mensuel/annuel. Export Excel/CSV, graphique et historique inclus." />
-  <meta name="twitter:image" content="https://example.com/preview.jpg" />
-  <link rel="canonical" href="https://example.com" />
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <meta name="twitter:image" content="https://finagora.fr/assets/og-image-outils.jpg" />
+  <link rel="canonical" href="https://finagora.github.io/Finagora-outils-financiers-en-ligne" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.css" />
-  <title>Outils Financiers | TCAM, Intérêts, Taux</title>
+  <title>Outils Financiers | Finagora</title>
   <style>
     :root {
-      --bg: #f9f9f9;
-      --text: #222;
-      --card: #fff;
-      --primary: #007bff;
-      --shadow: 0 2px 10px rgba(0,0,0,0.05);
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --gray-color: #6c757d;
+      --white-color: #ffffff;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      --border-radius: 12px;
+      --font-family: 'Inter', sans-serif;
     }
-    body.dark {
-      --bg: #121212;
-      --text: #eee;
-      --card: #1e1e1e;
-      --primary: #3399ff;
-      --shadow: 0 2px 12px rgba(255,255,255,0.05);
-    }
+
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, sans-serif;
+      background: var(--light-color);
+      color: var(--dark-color);
+      font-family: var(--font-family);
       margin: 0;
       padding: 1rem;
       line-height: 1.6;
     }
+
+    body.dark {
+      --light-color: #121212;
+      --dark-color: #f8f9fa;
+      --white-color: #1e1e1e;
+      --gray-color: #ccc;
+    }
+
     h1, h2 {
       text-align: center;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-    }
-    section {
-      background: var(--card);
-      padding: 1.5rem;
-      margin: 1.5rem 0;
-      border-radius: 1rem;
-      box-shadow: var(--shadow);
-    }
-    label {
-      display: block;
-      margin-top: 1rem;
+      color: var(--secondary-color);
       font-weight: 600;
     }
-    input {
-      width: 100%;
-      padding: 0.5rem;
-      margin-top: 0.3rem;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    button {
-      margin-top: 1rem;
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .toggle-theme {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      background: var(--card);
-      border: 1px solid #ccc;
-      padding: 0.4rem 0.9rem;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      color: var(--text);
-    }
-    table {
-      width: 100%;
-      margin-top: 1rem;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 0.4rem;
-      text-align: center;
-    }
-    canvas {
-      max-width: 100%;
-      margin-top: 1rem;
-    }
-    .hidden {
-      display: none;
-    }
-    /* Style pour le lien dans le h1 */
+
     h1 a {
       color: inherit;
       text-decoration: none;
     }
+
     h1 a:hover {
       text-decoration: underline;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 1rem;
+    }
+
+    .header-link {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin: 0 auto 1.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(67, 97, 238, 0.1);
+      border-radius: 20px;
+      width: fit-content;
+      transition: background 0.3s;
+    }
+
+    .header-link:hover {
+      background: rgba(67, 97, 238, 0.2);
+      text-decoration: underline;
+    }
+
+    section {
+      background: var(--white-color);
+      padding: 1.8rem;
+      margin: 1.5rem 0;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 500;
+      color: var(--dark-color);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 0.3rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-family: var(--font-family);
+    }
+
+    button {
+      margin-top: 1rem;
+      background: var(--primary-color);
+      color: var(--white-color);
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.3s;
+      display: block;
+      width: 100%;
+    }
+
+    button:hover {
+      background: var(--secondary-color);
+    }
+
+    .toggle-theme {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--white-color);
+      border: 1px solid #ddd;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: var(--dark-color);
+      box-shadow: var(--shadow);
+      z-index: 100;
+    }
+
+    .result {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(67, 97, 238, 0.1);
+      border-radius: 6px;
+      font-weight: 500;
+      color: var(--secondary-color);
+    }
+
+    table {
+      width: 100%;
+      margin-top: 1rem;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      border: 1px solid #eee;
+      padding: 0.6rem;
+      text-align: center;
+    }
+
+    th {
+      background: rgba(67, 97, 238, 0.1);
+      color: var(--secondary-color);
+      font-weight: 600;
+    }
+
+    canvas {
+      max-width: 100%;
+      margin-top: 1rem;
+      border-radius: 6px;
+      box-shadow: var(--shadow);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .export-btn {
+      background: rgba(67, 97, 238, 0.2);
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .export-btn:hover {
+      background: rgba(67, 97, 238, 0.3);
     }
   </style>
 </head>
 <body>
-  <button class="toggle-theme" onclick="document.body.classList.toggle('dark')">🌓 Thème</button>
+  <button class="toggle-theme" onclick="document.body.classList.toggle('dark')">🌓 Thème sombre</button>
   <main class="container">
-    <!-- Titre modifié avec lien -->
     <h1>
-      <a href="https://finagora.github.io/Finagora-actu" target="_blank" rel="noopener noreferrer">
-       S'informer sur Finagora →
+      <a href="https://finagora.github.io/Finagora-actu" target="_blank" rel="noopener noreferrer" class="header-link">
+        ← Retour à Finagora
       </a>
     </h1>
-    <p style="text-align: center;">Outils financiers gratuits et rapides : TCAM, intérêt composé, convertisseur de taux.</p>
+    <p style="text-align: center; margin-bottom: 1.5rem;">Outils financiers gratuits et rapides : calculez votre TCAM, intérêt composé, ou convertissez des taux. Export Excel/CSV et graphiques inclus.</p>
 
-    <!-- Sections des outils -->
+    <!-- Section TCAM -->
     <section>
       <h2>📈 TCAM (Taux de Croissance Annuel Moyen)</h2>
       <label for="tcam-initial">Valeur Initiale (€)</label>
-      <input id="tcam-initial" type="number" />
+      <input id="tcam-initial" type="number" placeholder="Ex: 1000" />
       <label for="tcam-finale">Valeur Finale (€)</label>
-      <input id="tcam-finale" type="number" />
+      <input id="tcam-finale" type="number" placeholder="Ex: 2000" />
       <label for="tcam-annees">Durée (années)</label>
-      <input id="tcam-annees" type="number" />
+      <input id="tcam-annees" type="number" placeholder="Ex: 5" />
       <button onclick="calcTCAM()">Calculer TCAM</button>
       <div id="tcam-result" class="result"></div>
-      <div id="tcam-expert" style="display:none;"></div>
-      <div><strong>Historique</strong> <button onclick="exportTCAM()">📤 Exporter</button></div>
-      <table id="tcam-history-table"><thead></thead><tbody></tbody></table>
+      <div id="tcam-expert" style="display:none; margin-top: 0.5rem; font-size: 0.9rem; color: var(--gray-color);"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+        <strong>Historique des calculs</strong>
+        <button class="export-btn" onclick="exportTCAM()">📤 Exporter</button>
+      </div>
+      <table id="tcam-history-table">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
     </section>
+
+    <!-- Section Intérêt Composé -->
     <section>
       <h2>💰 Intérêt Composé</h2>
       <label for="capital">Capital Initial (€)</label>
-      <input id="capital" type="number" />
+      <input id="capital" type="number" placeholder="Ex: 1000" />
       <label for="taux">Taux Annuel (%)</label>
-      <input id="taux" type="number" />
+      <input id="taux" type="number" placeholder="Ex: 5" />
       <label for="duree">Durée (années)</label>
-      <input id="duree" type="number" />
+      <input id="duree" type="number" placeholder="Ex: 10" />
       <button onclick="calcInteret()">Calculer</button>
       <div id="interet-result" class="result"></div>
       <canvas id="chart" class="hidden"></canvas>
-      <div><strong>Historique</strong> <button onclick="exportInteret()">📤 Exporter</button></div>
-      <table id="interet-history-table"><thead></thead><tbody></tbody></table>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+        <strong>Historique des calculs</strong>
+        <button class="export-btn" onclick="exportInteret()">📤 Exporter</button>
+      </div>
+      <table id="interet-history-table">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
     </section>
+
+    <!-- Section Convertisseur de Taux -->
     <section>
       <h2>🔄 Convertisseur Taux Mensuel / Annuel</h2>
-      <label for="mensuel">Taux Mensuel (%)</label>
-      <input id="mensuel" type="number" />
-      <button onclick="mensuelVersAnnuel()">→ Taux Annuel</button>
-      <div id="result-annuel"></div>
-      <label for="annuel">Taux Annuel (%)</label>
-      <input id="annuel" type="number" />
-      <button onclick="annuelVersMensuel()">→ Taux Mensuel</button>
-      <div id="result-mensuel"></div>
-      <div><strong>Historique</strong> <button onclick="exportTaux()">📤 Exporter</button></div>
-      <table id="taux-history-table"><thead></thead><tbody></tbody></table>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div>
+          <label for="mensuel">Taux Mensuel (%)</label>
+          <input id="mensuel" type="number" placeholder="Ex: 0.5" />
+          <button onclick="mensuelVersAnnuel()">→ Taux Annuel</button>
+          <div id="result-annuel" class="result"></div>
+        </div>
+        <div>
+          <label for="annuel">Taux Annuel (%)</label>
+          <input id="annuel" type="number" placeholder="Ex: 6" />
+          <button onclick="annuelVersMensuel()">→ Taux Mensuel</button>
+          <div id="result-mensuel" class="result"></div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+        <strong>Historique des conversions</strong>
+        <button class="export-btn" onclick="exportTaux()">📤 Exporter</button>
+      </div>
+      <table id="taux-history-table">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
     </section>
   </main>
+
   <!-- Libs -->
-  <script async defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script async defer src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <script>
     const val = id => parseFloat(document.getElementById(id).value) || 0;
     const set = (id, text) => document.getElementById(id).textContent = text;
     let tcamHistory = [], interetHistory = [], tauxHistory = [];
+
     function updateTable(id, columns, data) {
       const table = document.getElementById(id);
       const thead = table.querySelector("thead");
@@ -185,6 +303,7 @@
       thead.innerHTML = "<tr>" + columns.map(c => `<th>${c}</th>`).join('') + "</tr>";
       tbody.innerHTML = data.map(row => `<tr>${columns.map(k => `<td>${row[k]}</td>`).join('')}</tr>`).join('');
     }
+
     function calcTCAM() {
       const vi = val('tcam-initial'), vf = val('tcam-finale'), n = val('tcam-annees');
       if (vi && vf && n) {
@@ -192,10 +311,11 @@
         set("tcam-result", `TCAM : ${tcam} %`);
         document.getElementById("tcam-expert").textContent = `Formule : ((VF / VI)^(1/n)) - 1`;
         document.getElementById("tcam-expert").style.display = "block";
-        tcamHistory.push({ "Valeur Initiale": vi, "Valeur Finale": vf, "Durée (années)": n, "TCAM (%)": tcam });
+        tcamHistory.push({ "Valeur Initiale (€)": vi, "Valeur Finale (€)": vf, "Durée (années)": n, "TCAM (%)": tcam });
         updateTable("tcam-history-table", Object.keys(tcamHistory[0]), tcamHistory);
       }
     }
+
     function calcInteret() {
       const ci = val('capital');
       const taux = val('taux') / 100;
@@ -203,52 +323,59 @@
       if (ci && n) {
         const final = (ci * (1 + taux) ** n).toFixed(2).replace('.', ',');
         set("interet-result", `Montant final : ${final} €`);
-        interetHistory.push({ "Capital Initial (€)": ci, "Taux (%)": (taux * 100).toFixed(2).replace('.', ','), "Durée": n, "Montant Final (€)": final });
+        interetHistory.push({ "Capital Initial (€)": ci, "Taux (%)": (taux * 100).toFixed(2).replace('.', ','), "Durée (années)": n, "Montant Final (€)": final });
         updateTable("interet-history-table", Object.keys(interetHistory[0]), interetHistory);
         renderChart(ci, taux, n);
       }
     }
+
     function mensuelVersAnnuel() {
       const m = val('mensuel');
       if (m >= 0) {
         const a = ((1 + m / 100) ** 12 - 1) * 100;
         set("result-annuel", `Taux annuel équivalent : ${a.toFixed(2).replace('.', ',')} %`);
-        tauxHistory.push({ "Conversion": "Mensuel → Annuel", "Entrée (%)": m, "Résultat (%)": a.toFixed(2).replace('.', ',') });
-        updateTable("taux-history-table", Object.keys(tauxHistory[0]), tauxHistory);
+        tauxHistory.push({ "Type": "Mensuel → Annuel", "Taux Entrée (%)": m, "Taux Résultat (%)": a.toFixed(2).replace('.', ',') });
+        updateTable("taux-history-table", ["Type", "Taux Entrée (%)", "Taux Résultat (%)"], tauxHistory);
       }
     }
+
     function annuelVersMensuel() {
       const a = val('annuel');
       if (a >= 0) {
         const m = ((1 + a / 100) ** (1 / 12) - 1) * 100;
         set("result-mensuel", `Taux mensuel équivalent : ${m.toFixed(2).replace('.', ',')} %`);
-        tauxHistory.push({ "Conversion": "Annuel → Mensuel", "Entrée (%)": a, "Résultat (%)": m.toFixed(2).replace('.', ',') });
-        updateTable("taux-history-table", Object.keys(tauxHistory[0]), tauxHistory);
+        tauxHistory.push({ "Type": "Annuel → Mensuel", "Taux Entrée (%)": a, "Taux Résultat (%)": m.toFixed(2).replace('.', ',') });
+        updateTable("taux-history-table", ["Type", "Taux Entrée (%)", "Taux Résultat (%)"], tauxHistory);
       }
     }
+
     function formatDataForExport(data) {
       return data.map(row => {
-        return Object.keys(row).reduce((acc, key) => {
-          acc[key] = typeof row[key] === 'number' ? row[key].toFixed(2).replace('.', ',') : row[key];
-          return acc;
-        }, {});
+        const formattedRow = {};
+        for (const key in row) {
+          formattedRow[key] = typeof row[key] === 'number' ? row[key].toFixed(2).replace('.', ',') : row[key];
+        }
+        return formattedRow;
       });
     }
+
     function exportData(data, name) {
       const formattedData = formatDataForExport(data);
       const ws = XLSX.utils.json_to_sheet(formattedData);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, name);
-      XLSX.writeFile(wb, name + ".xlsx");
+      XLSX.writeFile(wb, `${name}.xlsx`);
     }
-    function exportTCAM() { exportData(tcamHistory, "TCAM"); }
-    function exportInteret() { exportData(interetHistory, "InteretCompose"); }
-    function exportTaux() { exportData(tauxHistory, "ConvertisseurTaux"); }
+
+    function exportTCAM() { exportData(tcamHistory, "Historique_TCAM"); }
+    function exportInteret() { exportData(interetHistory, "Historique_Interet_Compose"); }
+    function exportTaux() { exportData(tauxHistory, "Historique_Convertisseur_Taux"); }
+
     function renderChart(ci, taux, n) {
       const labels = [];
       const data = [];
       for (let i = 0; i <= n; i++) {
-        labels.push("Année " + i);
+        labels.push(`Année ${i}`);
         data.push(parseFloat((ci * (1 + taux) ** i).toFixed(2)));
       }
       const ctx = document.getElementById('chart').getContext('2d');
@@ -261,12 +388,18 @@
           datasets: [{
             label: "Évolution du capital (€)",
             data: data,
-            borderColor: "#007bff",
-            fill: false,
-            tension: 0.1
+            borderColor: "#4361ee",
+            backgroundColor: "rgba(67, 97, 238, 0.1)",
+            fill: true,
+            tension: 0.2
           }]
         },
-        options: { responsive: true }
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' }
+          }
+        }
       });
     }
   </script>
